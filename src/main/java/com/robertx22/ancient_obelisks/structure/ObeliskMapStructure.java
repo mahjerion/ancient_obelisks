@@ -1,6 +1,7 @@
 package com.robertx22.ancient_obelisks.structure;
 
 import com.robertx22.ancient_obelisks.database.ObeliskDatabase;
+import com.robertx22.ancient_obelisks.main.CommonInit;
 import com.robertx22.library_of_exile.dimension.MapGenerationUTIL;
 import com.robertx22.library_of_exile.dimension.structure.SimplePrebuiltMapData;
 import com.robertx22.library_of_exile.dimension.structure.SimplePrebuiltMapStructure;
@@ -19,6 +20,13 @@ public class ObeliskMapStructure extends SimplePrebuiltMapStructure {
     @Override
     public int getHeight() {
         return 50;
+    }
+
+    public ChunkPos getStartFromCounter(int x, int z) {
+
+        var start = new ChunkPos(x * ObeliskMapStructure.DUNGEON_LENGTH, z * ObeliskMapStructure.DUNGEON_LENGTH);
+        start = CommonInit.OBELISK_MAP_STRUCTURE.getStartChunkPos(start);
+        return start;
     }
 
     public static int DUNGEON_LENGTH = 10;

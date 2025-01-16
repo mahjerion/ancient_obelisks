@@ -4,7 +4,7 @@
     "type": "ancient_obelisks:obelisk_chunk_gen",	
 	"map_id": "obelisk",
     "settings": {
-      "biome": "obelisk:obelisk_biome",
+      "biome": "ancient_obelisks:obelisk_biome",
       "lakes": false,
       "features": false,
       "layers": [

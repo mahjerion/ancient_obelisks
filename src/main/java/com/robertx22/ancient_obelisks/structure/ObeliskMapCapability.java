@@ -30,6 +30,10 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
         this.world = world;
     }
 
+    public static ObeliskMapCapability get(Level entity) {
+        return entity.getCapability(INSTANCE).orElse(new ObeliskMapCapability(entity));
+    }
+
     public ObeliskWorldData data = new ObeliskWorldData();
 
     @Override

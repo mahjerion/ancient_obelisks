@@ -6,6 +6,7 @@ import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBE;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBlock;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.database.ObeliskDatabase;
+import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapStructure;
 import com.robertx22.library_of_exile.dimension.MapChunkGenEvent;
@@ -13,6 +14,7 @@ import com.robertx22.library_of_exile.dimension.MapChunkGens;
 import com.robertx22.library_of_exile.dimension.MapDimensions;
 import com.robertx22.library_of_exile.events.base.EventConsumer;
 import com.robertx22.library_of_exile.main.ApiForgeEvents;
+import com.robertx22.library_of_exile.registry.util.ExileRegistryUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -44,6 +46,7 @@ public class CommonInit {
     public static String ID = "ancient_obelisks";
 
     public static String DIMENSION_ID = "ancient_obelisks:obelisk";
+    public static ResourceLocation DIMENSION_KEY = new ResourceLocation(DIMENSION_ID);
 
 
     public static boolean RUN_DEV_TOOLS = true;
@@ -63,13 +66,18 @@ public class CommonInit {
 
     public static RegistryObject<ObeliskBlock> OBELISK_BLOCK = BLOCKS.register("obelisk", () -> new ObeliskBlock());
     public static RegistryObject<BlockItem> OBELISK_ITEM = ITEMS.register("obelisk", () -> new BlockItem(OBELISK_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static RegistryObject<ObeliskMapItem> OBELISK_MAP_ITEM = ITEMS.register("obelisk_map", () -> new ObeliskMapItem());
     public static RegistryObject<BlockEntityType<ObeliskBE>> OBELISK_BE = BLOCK_ENTITIES.register("obelisk", () -> BlockEntityType.Builder.of(ObeliskBE::new, OBELISK_BLOCK.get()).build(null));
 
 
     public static ObeliskMapStructure OBELISK_MAP_STRUCTURE = new ObeliskMapStructure();
 
     public CommonInit() {
-        
+
+        if (RUN_DEV_TOOLS) {
+            ExileRegistryUtil.setCurrentRegistarMod(CommonInit.ID);
+        }
+
         MapDimensions.map.put(DIMENSION_ID, true);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ObeliskConfig.SPEC);
@@ -105,6 +113,8 @@ public class CommonInit {
                     @Override
                     public void accept(CreativeModeTab.ItemDisplayParameters param, CreativeModeTab.Output output) {
                         output.accept(OBELISK_ITEM.get());
+                        output.accept(OBELISK_MAP_ITEM.get());
+
                     }
                 })
                 .build());
