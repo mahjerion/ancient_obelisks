@@ -9,4 +9,6 @@ public class ObeliskMapData {
     public int currentWave = 1;
     public int maxWaves = 5;
 
+    public int x = 0;
+    public int z = 0;
 }

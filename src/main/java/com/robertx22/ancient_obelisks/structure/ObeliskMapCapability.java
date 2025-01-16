@@ -1,7 +1,7 @@
 package com.robertx22.ancient_obelisks.structure;
 
 import com.google.gson.JsonSyntaxException;
-import com.robertx22.ancient_obelisks.main.CommonInit;
+import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.registry.IAutoGson;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,7 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
 
     public Level world;
 
-    public static final ResourceLocation RESOURCE = new ResourceLocation(CommonInit.ID, "world_data");
+    public static final ResourceLocation RESOURCE = new ResourceLocation(ObelisksMain.ID, "world_data");
     public static Capability<ObeliskMapCapability> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -31,7 +31,7 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
     }
 
     public static ObeliskMapCapability get(Level entity) {
-        return entity.getCapability(INSTANCE).orElse(new ObeliskMapCapability(entity));
+        return entity.getServer().overworld().getCapability(INSTANCE).orElse(new ObeliskMapCapability(entity));
     }
 
     public ObeliskWorldData data = new ObeliskWorldData();

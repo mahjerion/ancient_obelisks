@@ -2,7 +2,7 @@ package com.robertx22.ancient_obelisks.database;
 
 import com.robertx22.ancient_obelisks.affix.types.AttributeObeliskAffix;
 import com.robertx22.ancient_obelisks.affix.types.BaseObeliskAffix;
-import com.robertx22.ancient_obelisks.main.CommonInit;
+import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.dimension.structure.SimplePrebuiltMapData;
 import com.robertx22.library_of_exile.registry.Database;
 import com.robertx22.library_of_exile.registry.ExileRegistryContainer;
@@ -16,14 +16,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ObeliskDatabase {
 
-    public static SeriazableRegistration SERIALIZABLE_INFO = new SeriazableRegistration(CommonInit.ID);
+    public static SeriazableRegistration SERIALIZABLE_INFO = new SeriazableRegistration(ObelisksMain.ID);
 
-    public static ExileRegistryType OBELISK_TYPE = ExileRegistryType.register(CommonInit.ID, "obelisk", 0, Obelisk.SERIALIZER, SyncTime.ON_LOGIN);
-    public static ExileRegistryType ATTRIBUTE_AFFIX = ExileRegistryType.register(CommonInit.ID, "attribute_affix", 0, AttributeObeliskAffix.SERIALIZER, SyncTime.ON_LOGIN);
+    public static ExileRegistryType OBELISK_TYPE = ExileRegistryType.register(ObelisksMain.ID, "obelisk", 0, Obelisk.SERIALIZER, SyncTime.ON_LOGIN);
+    public static ExileRegistryType ATTRIBUTE_AFFIX = ExileRegistryType.register(ObelisksMain.ID, "attribute_affix", 0, AttributeObeliskAffix.SERIALIZER, SyncTime.ON_LOGIN);
 
     public static void registerObjects() {
 
-        String structureprefix = CommonInit.ID + ":obelisk/";
+        String structureprefix = ObelisksMain.ID + ":obelisk/";
 
         new Obelisk(new SimplePrebuiltMapData(1, structureprefix + "stone"), 1000, "stone").addToSerializables(SERIALIZABLE_INFO);
 
