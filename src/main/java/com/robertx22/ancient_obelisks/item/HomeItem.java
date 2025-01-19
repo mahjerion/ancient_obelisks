@@ -27,7 +27,7 @@ public class HomeItem extends Item {
 
         if (!pLevel.isClientSide) {
 
-            if (MapDimensions.map.getOrDefault(p.level().dimensionTypeId().location().toString(), false)) {
+            if (MapDimensions.isMap(p.level())) {
                 if (p.isCrouching()) {
                     PlayerDataCapability.get(p).mapTeleports.teleportHome(p);
                 } else {
@@ -43,6 +43,6 @@ public class HomeItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.translatable(ObelisksMain.ID + ".homeitem"));
+        pTooltipComponents.add(Component.translatable(ObelisksMain.MODID + ".homeitem"));
     }
 }

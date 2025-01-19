@@ -20,7 +20,7 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
 
     public Level world;
 
-    public static final ResourceLocation RESOURCE = new ResourceLocation(ObelisksMain.ID, "world_data");
+    public static final ResourceLocation RESOURCE = new ResourceLocation(ObelisksMain.MODID, "world_data");
     public static Capability<ObeliskMapCapability> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
     });
 

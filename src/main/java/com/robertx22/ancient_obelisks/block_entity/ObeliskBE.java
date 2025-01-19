@@ -1,6 +1,6 @@
 package com.robertx22.ancient_obelisks.block_entity;
 
-import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.ancient_obelisks.main.ObeliskEntries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -10,11 +10,11 @@ public class ObeliskBE extends BlockEntity {
 
 
     public boolean gaveMap = false;
-    public int x = 0;
-    public int z = 0;
+    public int x = -1;
+    public int z = -1;
 
     public boolean isActivated() {
-        return x != 0 && z != 0;
+        return x != -1 || z != -1;
     }
 
     public void setGaveMap() {
@@ -23,7 +23,7 @@ public class ObeliskBE extends BlockEntity {
     }
 
     public ObeliskBE(BlockPos pPos, BlockState pBlockState) {
-        super(ObelisksMain.OBELISK_BE.get(), pPos, pBlockState);
+        super(ObeliskEntries.OBELISK_BE.get(), pPos, pBlockState);
 
     }
 

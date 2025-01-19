@@ -27,7 +27,7 @@ public class ObeliskBlock extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of().strength(10).noOcclusion());
     }
 
-    public static void startNewMap(Player p, ItemStack stack) {
+    public static void startNewMap(Player p, ItemStack stack, ObeliskBE be) {
 
         ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
 
@@ -42,7 +42,12 @@ public class ObeliskBlock extends BaseEntityBlock {
         data.x = start.x;
         data.z = start.z;
 
-        ObeliskMapCapability.get(p.level()).data.data.setData(p, data);
+        be.x = start.x;
+        be.z = start.z;
+
+        stack.shrink(1);
+
+        ObeliskMapCapability.get(p.level()).data.data.setData(p, data, ObelisksMain.OBELISK_MAP_STRUCTURE, start.getMiddleBlockPosition(5));
 
         pdata.mapTeleports.entranceTeleportLogic(p, ObelisksMain.DIMENSION_KEY, pos);
 
@@ -61,16 +66,15 @@ public class ObeliskBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState pState, Level world, BlockPos pPos, Player p, InteractionHand pHand, BlockHitResult pHit) {
 
         if (!world.isClientSide) {
-            ItemStack stack = p.getMainHandItem();
+            var be = world.getBlockEntity(pPos);
 
-            if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
-                startNewMap(p, stack);
-            } else {
+            if (be instanceof ObeliskBE obe) {
 
-                var be = world.getBlockEntity(pPos);
+                ItemStack stack = p.getMainHandItem();
 
-                if (be instanceof ObeliskBE obe) {
-
+                if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
+                    startNewMap(p, stack, obe);
+                } else {
                     if (obe.isActivated()) {
                         joinCurrentMap(p, obe);
                     } else {
@@ -96,7 +100,7 @@ public class ObeliskBlock extends BaseEntityBlock {
         player.getInventory().setChanged();
     }
 
-    
+
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new ObeliskBE(pPos, pState);

@@ -1,5 +1,7 @@
 package com.robertx22.ancient_obelisks.block_entity;
 
+import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -31,7 +33,20 @@ public class ObeliskMobSpawnerBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return new BlockEntityTicker<T>() {
             @Override
-            public void tick(Level pLevel, BlockPos pPos, BlockState pState, T pBlockEntity) {
+            public void tick(Level world, BlockPos pos, BlockState pState, T be) {
+
+                if (!world.isClientSide) {
+                    if (be instanceof ObeliskMobSpawnerBE sbe) {
+                        if (sbe.tick++ % 20 == 0) {
+                            var map = ObeliskMapCapability.get(world).data.data.getData(ObelisksMain.OBELISK_MAP_STRUCTURE, sbe.getBlockPos());
+
+                            if (map != null) {
+                                map.waveLogicSecond(world, pos);
+                            }
+                        }
+                    }
+                }
+
                 // todo
             }
         };

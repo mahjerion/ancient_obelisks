@@ -16,14 +16,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ObeliskDatabase {
 
-    public static SeriazableRegistration SERIALIZABLE_INFO = new SeriazableRegistration(ObelisksMain.ID);
+    public static SeriazableRegistration SERIALIZABLE_INFO = new SeriazableRegistration(ObelisksMain.MODID);
 
-    public static ExileRegistryType OBELISK_TYPE = ExileRegistryType.register(ObelisksMain.ID, "obelisk", 0, Obelisk.SERIALIZER, SyncTime.ON_LOGIN);
-    public static ExileRegistryType ATTRIBUTE_AFFIX = ExileRegistryType.register(ObelisksMain.ID, "attribute_affix", 0, AttributeObeliskAffix.SERIALIZER, SyncTime.ON_LOGIN);
+    public static ExileRegistryType OBELISK_TYPE = ExileRegistryType.register(ObelisksMain.MODID, "obelisk", 0, Obelisk.SERIALIZER, SyncTime.ON_LOGIN);
+    public static ExileRegistryType ATTRIBUTE_AFFIX = ExileRegistryType.register(ObelisksMain.MODID, "attribute_affix", 0, AttributeObeliskAffix.SERIALIZER, SyncTime.ON_LOGIN);
 
     public static void registerObjects() {
 
-        String structureprefix = ObelisksMain.ID + ":obelisk/";
+        String structureprefix = ObelisksMain.MODID + ":obelisk/";
 
         new Obelisk(new SimplePrebuiltMapData(1, structureprefix + "stone"), 1000, "stone").addToSerializables(SERIALIZABLE_INFO);
 
