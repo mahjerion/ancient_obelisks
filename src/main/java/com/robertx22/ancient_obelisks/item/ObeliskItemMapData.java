@@ -17,6 +17,8 @@ public class ObeliskItemMapData {
 
     public int x = 0;
     public int z = 0;
+    public int maxWaves = 5;
+
 
     public ChunkPos getOrSetStartPos(Level world, ItemStack stack) {
 

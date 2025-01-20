@@ -19,13 +19,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -55,8 +58,14 @@ public class ObelisksMain {
 
 
     public ObelisksMain() {
+
+
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            bus.addListener(this::clientSetup);
+        });
+        
         MapDimensionConfig.register(DIMENSION_KEY, new MapDimensionConfigDefaults(2));
 
         new ObeliskModConstructor(MODID, bus);
@@ -105,6 +114,10 @@ public class ObelisksMain {
 
 
         System.out.println("Ancient Obelisks loaded.");
+    }
+
+    public void clientSetup(final FMLClientSetupEvent event) {
+        ObeliskClient.init();
     }
 
     public void commonSetupEvent(FMLCommonSetupEvent event) {

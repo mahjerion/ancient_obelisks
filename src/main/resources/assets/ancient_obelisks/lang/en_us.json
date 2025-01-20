@@ -1,5 +1,10 @@
 {
+	"ancient_obelisks.item_modification.add_wave": "Add %1$s Wave",
+	"ancient_obelisks.item_requirement.has_less_than_x_waves": "Must have less than %1$s Waves",
+	"ancient_obelisks.item_requirement.is_obelisk_map": "Must be an Obelisk Map Item",
+	"ancient_obelisks.words.item_x_waves": "%1$s Waves",
 	"ancient_obelisks.words.last_wave": "Last Wave INCOMING!",
-	"ancient_obelisks.words.wave_x_starting": "Wave %1$s Starting!"
+	"ancient_obelisks.words.wave_x_starting": "Wave %1$s Starting!",
+	"item.ancient_obelisks.orbs.add_wave": "Orb of Obelisk Waves"
 
 }

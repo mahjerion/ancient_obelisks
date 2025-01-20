@@ -30,6 +30,7 @@ public class ObeliskDataGen implements DataProvider {
 
         ExileLangFile.createFile(ObelisksMain.MODID, "");
 
+        // todo  new RecipeGenerator().generateAll(pOutput, Obe.MODID);
 
         for (ExileRegistryType type : ExileRegistryType.getAllInRegisterOrder()) {
             type.getDatapackGenerator().run(pOutput);

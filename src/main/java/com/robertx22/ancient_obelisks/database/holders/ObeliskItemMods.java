@@ -1,0 +1,25 @@
+package com.robertx22.ancient_obelisks.database.holders;
+
+import com.robertx22.ancient_obelisks.database.item_mods.AddObeliskWaveMod;
+import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.library_of_exile.registry.helpers.ExileKey;
+import com.robertx22.library_of_exile.registry.helpers.ExileKeyHolder;
+import com.robertx22.library_of_exile.registry.helpers.KeyInfo;
+import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegisterInfo;
+import com.robertx22.orbs_of_crafting.register.mods.base.ItemModification;
+
+public class ObeliskItemMods extends ExileKeyHolder<ItemModification> {
+    public static ObeliskItemMods INSTANCE = new ObeliskItemMods(ObelisksMain.REGISTER_INFO);
+
+    public ObeliskItemMods(ModRequiredRegisterInfo modRegisterInfo) {
+        super(modRegisterInfo);
+    }
+
+    public ExileKey<ItemModification, KeyInfo> ADD_WAVE = ExileKey.ofId(this, "add_wave", x -> new AddObeliskWaveMod(x.GUID(), new AddObeliskWaveMod.Data(1)));
+
+
+    @Override
+    public void loadClass() {
+
+    }
+}

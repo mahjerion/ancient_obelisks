@@ -4,6 +4,7 @@ import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskBlock;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBE;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBlock;
+import com.robertx22.ancient_obelisks.item.EssenceItem;
 import com.robertx22.ancient_obelisks.item.HomeItem;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
 import net.minecraft.core.registries.Registries;
@@ -38,6 +39,12 @@ public class ObeliskEntries {
     public static RegistryObject<BlockItem> OBELISK_ITEM = ITEMS.register("obelisk", () -> new BlockItem(OBELISK_BLOCK.get(), new Item.Properties().stacksTo(64)));
     public static RegistryObject<ObeliskMapItem> OBELISK_MAP_ITEM = ITEMS.register("obelisk_map", () -> new ObeliskMapItem());
     public static RegistryObject<HomeItem> HOME_TP_BACK = ITEMS.register("home", () -> new HomeItem());
+
+
+    public static RegistryObject<EssenceItem> WRATH = ITEMS.register("ancient_wrath", () -> new EssenceItem("Wrath"));
+    public static RegistryObject<EssenceItem> ENVY = ITEMS.register("ancient_envy", () -> new EssenceItem("Envy"));
+    public static RegistryObject<EssenceItem> GREED = ITEMS.register("ancient_green", () -> new EssenceItem("Greed"));
+
 
     public static void initDeferred() {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

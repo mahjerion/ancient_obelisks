@@ -3,6 +3,8 @@ package com.robertx22.ancient_obelisks.structure;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.library_of_exile.database.mob_list.MobList;
+import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,11 +16,10 @@ import net.minecraft.world.level.Level;
 public class ObeliskMapData {
     // todo
 
-    public ObeliskItemMapData item = null;
+    public ObeliskItemMapData item = new ObeliskItemMapData();
 
     public int currentWave = 0;
 
-    public int maxWaves = 5;
 
     public int mobsLeftForWave = 0;
 
@@ -39,7 +40,7 @@ public class ObeliskMapData {
         mobsLeftForWave = 50; // todo
 
         for (Player p : ObelisksMain.OBELISK_MAP_STRUCTURE.getAllPlayersInMap(world, pos)) {
-            if (currentWave == maxWaves) {
+            if (currentWave == item.maxWaves) {
                 p.sendSystemMessage(ObeliskWords.LAST_WAVE.get(currentWave).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             } else {
                 p.sendSystemMessage(ObeliskWords.WAVE_X_STARTING.get(currentWave).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
@@ -48,7 +49,7 @@ public class ObeliskMapData {
     }
 
     public void waveLogicSecond(Level world, BlockPos pos) {
-        if (currentWave > maxWaves) {
+        if (currentWave > item.maxWaves) {
             return;
         }
 
@@ -57,7 +58,7 @@ public class ObeliskMapData {
             tryStartNewWave(world, pos);
         }
 
-        if (currentWave > maxWaves) {
+        if (currentWave > item.maxWaves) {
             // todo give rewards
             return;
         }
@@ -69,14 +70,13 @@ public class ObeliskMapData {
                 toSpawn = mobsLeftForWave;
             }
 
-            EntityType type = EntityType.ZOMBIE;// todo
+            var mobs = MobList.PREDETERMINED.getPredeterminedRandom(world, pos);
 
             for (int i = 0; i < toSpawn; i++) {
-                spawnMob(world, pos, type);
+                var mob = RandomUtils.weightedRandom(mobs.mobs);
+                spawnMob(world, pos, mob.getType());
             }
-
         }
-
 
     }
 
