@@ -3,18 +3,23 @@ package com.robertx22.ancient_obelisks.main;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.database.ObeliskDatabase;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
+import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapStructure;
 import com.robertx22.library_of_exile.config.map_dimension.MapDimensionConfig;
 import com.robertx22.library_of_exile.config.map_dimension.MapDimensionConfigDefaults;
+import com.robertx22.library_of_exile.database.affix.base.ExileAffixData;
+import com.robertx22.library_of_exile.database.affix.base.GrabMobAffixesEvent;
 import com.robertx22.library_of_exile.dimension.MapChunkGenEvent;
 import com.robertx22.library_of_exile.dimension.MapChunkGens;
 import com.robertx22.library_of_exile.dimension.MapDimensionInfo;
 import com.robertx22.library_of_exile.dimension.MapDimensions;
 import com.robertx22.library_of_exile.events.base.EventConsumer;
+import com.robertx22.library_of_exile.events.base.ExileEvents;
 import com.robertx22.library_of_exile.main.ApiForgeEvents;
 import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegisterInfo;
 import com.robertx22.library_of_exile.registry.util.ExileRegistryUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -32,6 +38,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Mod("ancient_obelisks")
@@ -65,7 +72,7 @@ public class ObelisksMain {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             bus.addListener(this::clientSetup);
         });
-        
+
         MapDimensionConfig.register(DIMENSION_KEY, new MapDimensionConfigDefaults(2));
 
         new ObeliskModConstructor(MODID, bus);
@@ -95,6 +102,34 @@ public class ObelisksMain {
             }
         });
 
+        ExileEvents.GRAB_MOB_AFFIXES.register(new EventConsumer<GrabMobAffixesEvent>() {
+            @Override
+            public void accept(GrabMobAffixesEvent e) {
+                var map = MapDimensions.getInfo(e.en.level());
+                if (map != null && map.dimensionId.equals(DIMENSION_KEY)) {
+                    var mapdata = ObeliskMapCapability.get(e.en.level()).data.data.getData(OBELISK_MAP_STRUCTURE, e.en.blockPosition());
+                    if (mapdata != null) {
+                        for (int i = 0; i < mapdata.currentWave; i++) {
+                            for (ExileAffixData affix : mapdata.item.getAffixesForWave(i)) {
+                                if (affix.getAffix().affects.is(e.en)) {
+                                    e.allAffixes.add(affix);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        ApiForgeEvents.registerForgeEvent(LivingEvent.LivingTickEvent.class, event -> {
+            var en = event.getEntity();
+            if (en.tickCount == 2) {
+                ifMapData(event.getEntity().level(), event.getEntity().blockPosition()).ifPresent(x -> {
+                    ObeliskMobTierStats.tryApply(en, x);
+                });
+            }
+        });
+
 
         ObeliskEntries.CREATIVE_TAB.register("ancient_obelisk_tab", () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 2)
                 .icon(() -> ObeliskEntries.OBELISK_ITEM.get().getDefaultInstance())
@@ -114,6 +149,17 @@ public class ObelisksMain {
 
 
         System.out.println("Ancient Obelisks loaded.");
+    }
+
+    public Optional<ObeliskMapData> ifMapData(Level level, BlockPos pos) {
+        var map = MapDimensions.getInfo(level);
+        if (map != null && map.dimensionId.equals(DIMENSION_KEY)) {
+            var mapdata = ObeliskMapCapability.get(level).data.data.getData(OBELISK_MAP_STRUCTURE, pos);
+            if (mapdata != null) {
+                return Optional.of(mapdata);
+            }
+        }
+        return Optional.empty();
     }
 
     public void clientSetup(final FMLClientSetupEvent event) {

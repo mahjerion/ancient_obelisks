@@ -9,7 +9,8 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.Locale;
 
 public enum ObeliskWords implements ITranslated {
-    ITEM_X_WAVES("%1$s Waves"),
+    ITEM_WAVE_X("Wave %1$s"),
+    OBELISK_TIER_X("Obelisk Tier: %1$s"),
     WAVE_X_STARTING("Wave %1$s Starting!"),
     LAST_WAVE("Last Wave INCOMING!");
     public String name;

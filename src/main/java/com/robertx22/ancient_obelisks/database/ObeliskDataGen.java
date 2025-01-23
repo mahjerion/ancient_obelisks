@@ -1,9 +1,12 @@
 package com.robertx22.ancient_obelisks.database;
 
+import com.robertx22.ancient_obelisks.main.ObeliskEntries;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.localization.ExileLangFile;
+import com.robertx22.library_of_exile.localization.ExileTranslation;
 import com.robertx22.library_of_exile.localization.ITranslated;
+import com.robertx22.library_of_exile.localization.TranslationBuilder;
 import com.robertx22.library_of_exile.registry.ExileRegistryType;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -23,10 +26,13 @@ public class ObeliskDataGen implements DataProvider {
     public CompletableFuture<?> run(CachedOutput pOutput) {
         List<ITranslated> tra = new ArrayList<>();
         tra.addAll(Arrays.stream(ObeliskWords.values()).toList());
-
         for (ITranslated t : tra) {
             t.createTranslationBuilder().build();
         }
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_MAP_ITEM.get(), "Obelisk Map")).build();
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_ITEM.get(), "Obelisk")).build();
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.OBELISK_BLOCK.get(), "Obelisk")).build();
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.SPAWNER_BLOCK.get(), "Obelisk Spawner")).build();
 
         ExileLangFile.createFile(ObelisksMain.MODID, "");
 

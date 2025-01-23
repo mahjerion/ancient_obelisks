@@ -9,12 +9,14 @@ public class ObeliskMapItem extends Item {
         super(new Properties().stacksTo(1));
     }
 
-    
+
     public static ItemStack blankMap() {
 
         ItemStack stack = new ItemStack(ObeliskEntries.OBELISK_MAP_ITEM.get());
 
         var data = new ObeliskItemMapData();
+
+        data.generateInitialWaves();
 
         ObeliskItemNbt.OBELISK_MAP.saveTo(stack, data);
 

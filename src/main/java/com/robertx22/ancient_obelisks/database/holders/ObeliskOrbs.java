@@ -30,6 +30,13 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
             .weight(0)
             .build(this);
 
+    public ExileKey<ExileCurrency, IdKey> ADD_TIER = ExileCurrency.Builder.of("add_tier", "Orb of Obelisk Difficulty", ObeliskItemReqs.INSTANCE.IS_OBELISK_MAP)
+            .addRequirement(ObeliskItemReqs.INSTANCE.IS_LESS_THAN_MAX_TIER)
+            .addAlwaysUseModification(ObeliskItemMods.INSTANCE.ADD_TIER)
+            .potentialCost(0)
+            .weight(0)
+            .build(this);
+
 
     @Override
     public void loadClass() {
@@ -45,5 +52,13 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
                     .pattern("YYY");
         });
 
+        ADD_TIER.addRecipe(OrbDatabase.CURRENCY, x -> {
+            return ShapedRecipeUTIL.of(x.getItem(), 1)
+                    .define('X', Items.IRON_INGOT)
+                    .define('Y', ObeliskEntries.ENVY.get())
+                    .pattern("YYY")
+                    .pattern("YXY")
+                    .pattern("YYY");
+        });
     }
 }
