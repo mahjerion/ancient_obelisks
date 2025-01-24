@@ -33,6 +33,7 @@ public class ObeliskDataGen implements DataProvider {
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_ITEM.get(), "Obelisk")).build();
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.OBELISK_BLOCK.get(), "Obelisk")).build();
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.SPAWNER_BLOCK.get(), "Obelisk Spawner")).build();
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.OBELISK_REWARD_BLOCK.get(), "Obelisk Reward")).build();
 
         ExileLangFile.createFile(ObelisksMain.MODID, "");
 

@@ -21,7 +21,7 @@ public class ObeliskDatabase {
 
         new Obelisk(new SimplePrebuiltMapData(1, structureprefix + "stone"), 1000, "stone").addToSerializables(SERIALIZABLE_INFO);
 
-
+      
         // might not need super big builder classes if I won't have that many affixes?
         //    new AttributeObeliskAffix(ExileAffix.Affects.MOB, "speedy", 1000, Attributes.MOVEMENT_SPEED, "a250d6f0-c4b3-4a5d-854c-d259a671237a", AttributeModifier.Operation.MULTIPLY_TOTAL, 1.25).addToSerializables(SERIALIZABLE_INFO);
         //    new AttributeObeliskAffix(ExileAffix.Affects.MOB, "unmoving", 1000, Attributes.KNOCKBACK_RESISTANCE, "b250d6f0-c4b3-4a5d-854c-d259a671237a", AttributeModifier.Operation.ADDITION, 1).addToSerializables(SERIALIZABLE_INFO);

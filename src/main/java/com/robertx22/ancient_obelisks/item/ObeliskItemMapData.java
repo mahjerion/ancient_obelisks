@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ObeliskItemMapData {
 
@@ -40,6 +41,14 @@ public class ObeliskItemMapData {
 
         return all;
 
+    }
+
+    public int totalAffixes() {
+        int i = 0;
+        for (Map.Entry<Integer, List<ExileAffixData>> en : affixes.entrySet()) {
+            i += en.getValue().size();
+        }
+        return i;
     }
 
     public List<Component> getAffixesTooltip() {

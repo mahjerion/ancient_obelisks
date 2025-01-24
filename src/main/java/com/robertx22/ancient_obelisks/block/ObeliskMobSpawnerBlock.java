@@ -1,5 +1,6 @@
-package com.robertx22.ancient_obelisks.block_entity;
+package com.robertx22.ancient_obelisks.block;
 
+import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBE;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import net.minecraft.core.BlockPos;
@@ -35,19 +36,22 @@ public class ObeliskMobSpawnerBlock extends BaseEntityBlock {
             @Override
             public void tick(Level world, BlockPos pos, BlockState pState, T be) {
 
-                if (!world.isClientSide) {
-                    if (be instanceof ObeliskMobSpawnerBE sbe) {
-                        if (sbe.tick++ % 20 == 0) {
-                            var map = ObeliskMapCapability.get(world).data.data.getData(ObelisksMain.OBELISK_MAP_STRUCTURE, sbe.getBlockPos());
+                try {
+                    if (!world.isClientSide) {
+                        if (be instanceof ObeliskMobSpawnerBE sbe) {
+                            if (sbe.tick++ % 20 == 0) {
+                                var map = ObeliskMapCapability.get(world).data.data.getData(ObelisksMain.OBELISK_MAP_STRUCTURE, sbe.getBlockPos());
 
-                            if (map != null) {
-                                map.waveLogicSecond(world, pos);
+                                if (map != null) {
+                                    map.waveLogicSecond(world, pos);
+                                }
                             }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                // todo
             }
         };
     }

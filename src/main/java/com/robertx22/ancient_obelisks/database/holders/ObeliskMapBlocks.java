@@ -17,8 +17,8 @@ public class ObeliskMapBlocks extends ExileKeyHolder<MapDataBlock> {
         super(modRegisterInfo);
     }
 
-    public ExileKey<MapDataBlock, KeyInfo> OBELISK_SPAWNER = ExileKey.ofId(this, "obelisk_spawner", x -> new SetBlockMB(x.GUID(), ObeliskEntries.SPAWNER_BE.getId().toString()));
-
+    public ExileKey<MapDataBlock, KeyInfo> OBELISK_SPAWNER = ExileKey.ofId(this, "obelisk_spawner", x -> new SetBlockMB(x.GUID(), ObeliskEntries.SPAWNER_BLOCK.getId().toString()));
+    public ExileKey<MapDataBlock, KeyInfo> REWARD = ExileKey.ofId(this, "invis_obelisk_reward", x -> new SetBlockMB(x.GUID(), ObeliskEntries.OBELISK_REWARD_BLOCK.getId().toString()));
 
     @Override
     public void loadClass() {

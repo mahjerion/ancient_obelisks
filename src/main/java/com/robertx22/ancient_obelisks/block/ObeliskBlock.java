@@ -1,5 +1,6 @@
-package com.robertx22.ancient_obelisks.block_entity;
+package com.robertx22.ancient_obelisks.block;
 
+import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.item.ObeliskItemNbt;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
@@ -24,7 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class ObeliskBlock extends BaseEntityBlock {
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of().strength(10).noOcclusion());
+        super(BlockBehaviour.Properties.of().strength(10).noOcclusion().lightLevel(x -> 10));
     }
 
     public static void startNewMap(Player p, ItemStack stack, ObeliskBE be) {

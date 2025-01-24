@@ -20,12 +20,16 @@ import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegister
 import com.robertx22.library_of_exile.registry.util.ExileRegistryUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -37,8 +41,12 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @Mod("ancient_obelisks")
@@ -85,6 +93,25 @@ public class ObelisksMain {
             });
         }
 
+        ApiForgeEvents.registerForgeEvent(GatherDataEvent.class, event -> {
+            var output = event.getGenerator().getPackOutput();
+            var chestsLootTables = new LootTableProvider.SubProviderEntry(ObeliskLootTables.ObeliskLootTableProvider::new, LootContextParamSets.CHEST);
+            var provider = new LootTableProvider(output, Set.of(), List.of(chestsLootTables));
+            event.getGenerator().addProvider(true, provider);
+
+            if (RUN_DEV_TOOLS) {
+                // todo this doesnt seem to gen here?   ObeliskDatabase.generateJsons();
+            }
+
+            try {
+                // .. why does this not work otherwise?
+                event.getGenerator().run();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
         MapDimensions.register(new MapDimensionInfo(DIMENSION_KEY, OBELISK_MAP_STRUCTURE));
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ObeliskConfig.SPEC);
@@ -123,10 +150,12 @@ public class ObelisksMain {
 
         ApiForgeEvents.registerForgeEvent(LivingEvent.LivingTickEvent.class, event -> {
             var en = event.getEntity();
-            if (en.tickCount == 2) {
-                ifMapData(event.getEntity().level(), event.getEntity().blockPosition()).ifPresent(x -> {
-                    ObeliskMobTierStats.tryApply(en, x);
-                });
+            if (!en.level().isClientSide) {
+                if (en.tickCount == 2) {
+                    ifMapData(event.getEntity().level(), event.getEntity().blockPosition()).ifPresent(x -> {
+                        ObeliskMobTierStats.tryApply(en, x);
+                    });
+                }
             }
         });
 
@@ -137,9 +166,11 @@ public class ObelisksMain {
                 .displayItems(new CreativeModeTab.DisplayItemsGenerator() {
                     @Override
                     public void accept(CreativeModeTab.ItemDisplayParameters param, CreativeModeTab.Output output) {
-                        output.accept(ObeliskEntries.OBELISK_ITEM.get());
-                        output.accept(ObeliskEntries.OBELISK_MAP_ITEM.get());
-                        output.accept(ObeliskEntries.HOME_TP_BACK.get());
+                        for (Item item : ForgeRegistries.ITEMS) {
+                            if (ForgeRegistries.ITEMS.getKey(item).getNamespace().equals(ObelisksMain.MODID)) {
+                                output.accept(item);
+                            }
+                        }
                     }
                 })
                 .build());
@@ -147,11 +178,15 @@ public class ObelisksMain {
 
         ObeliskDatabase.initRegistries();
 
+        ObeliskRewardLogic.init();
 
         System.out.println("Ancient Obelisks loaded.");
     }
 
-    public Optional<ObeliskMapData> ifMapData(Level level, BlockPos pos) {
+    public static Optional<ObeliskMapData> ifMapData(Level level, BlockPos pos) {
+        if (level.isClientSide) {
+            return Optional.empty();
+        }
         var map = MapDimensions.getInfo(level);
         if (map != null && map.dimensionId.equals(DIMENSION_KEY)) {
             var mapdata = ObeliskMapCapability.get(level).data.data.getData(OBELISK_MAP_STRUCTURE, pos);

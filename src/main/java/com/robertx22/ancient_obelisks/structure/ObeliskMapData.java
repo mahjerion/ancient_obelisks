@@ -1,5 +1,6 @@
 package com.robertx22.ancient_obelisks.structure;
 
+import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
@@ -19,9 +20,10 @@ public class ObeliskMapData {
     public ObeliskItemMapData item = new ObeliskItemMapData();
 
     public int currentWave = 0;
-
-
     public int mobsLeftForWave = 0;
+    public int mob_kills = 0;
+
+    public int endsIn = 30;
 
     // as tick is per each obelisk block, this is crappy
     public int waveCd = 0;
@@ -29,13 +31,23 @@ public class ObeliskMapData {
     public int x = 0;
     public int z = 0;
 
+    public boolean canSpawnRewards = false;
+    public boolean spawnedRewards = false;
+
+
+    public float getTotalRewardChance() {
+        float chance = mob_kills * ObeliskConfig.get().LOOT_CHANCE_PER_MOB_KILL.get().floatValue();
+        chance *= (1 + item.tier * ObeliskConfig.get().LOOT_MULTI_PER_TIER.get().floatValue());
+        chance *= (1 + item.totalAffixes() * ObeliskConfig.get().LOOT_MULTI_PER_AFFIX.get().floatValue());
+        return chance;
+    }
 
     public void tryStartNewWave(Level world, BlockPos pos) {
         if (waveCd-- > 0) {
             return;
         }
 
-        waveCd = 60; // todo
+        waveCd = 100; // todo
         currentWave++;
         mobsLeftForWave = 50; // todo
 
@@ -48,24 +60,23 @@ public class ObeliskMapData {
         }
     }
 
+
     public void waveLogicSecond(Level world, BlockPos pos) {
-        if (currentWave > item.maxWaves) {
+        if (currentWave >= item.maxWaves) {
+            if (endsIn-- < 1) {
+                canSpawnRewards = true;
+            }
             return;
         }
-
 
         if (mobsLeftForWave < 1) {
             tryStartNewWave(world, pos);
         }
 
-        if (currentWave > item.maxWaves) {
-            // todo give rewards
-            return;
-        }
 
         if (mobsLeftForWave > 0) {
 
-            int toSpawn = 2 + currentWave;
+            int toSpawn = 1 + (RandomUtils.RandomRange(1, currentWave));
             if (toSpawn > mobsLeftForWave) {
                 toSpawn = mobsLeftForWave;
             }

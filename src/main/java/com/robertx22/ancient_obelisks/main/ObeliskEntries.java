@@ -1,11 +1,12 @@
 package com.robertx22.ancient_obelisks.main;
 
+import com.robertx22.ancient_obelisks.block.ObeliskBlock;
+import com.robertx22.ancient_obelisks.block.ObeliskMobSpawnerBlock;
+import com.robertx22.ancient_obelisks.block.ObeliskRewardBlock;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
-import com.robertx22.ancient_obelisks.block_entity.ObeliskBlock;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBE;
-import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBlock;
+import com.robertx22.ancient_obelisks.block_entity.ObeliskRewardBE;
 import com.robertx22.ancient_obelisks.item.EssenceItem;
-import com.robertx22.ancient_obelisks.item.HomeItem;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
@@ -29,21 +30,23 @@ public class ObeliskEntries {
     // blocks
     public static RegistryObject<ObeliskMobSpawnerBlock> SPAWNER_BLOCK = BLOCKS.register("obelisk_spawner", () -> new ObeliskMobSpawnerBlock());
     public static RegistryObject<ObeliskBlock> OBELISK_BLOCK = BLOCKS.register("obelisk", () -> new ObeliskBlock());
+    public static RegistryObject<ObeliskRewardBlock> OBELISK_REWARD_BLOCK = BLOCKS.register("obelisk_reward", () -> new ObeliskRewardBlock());
 
     // block entities
     public static RegistryObject<BlockEntityType<ObeliskMobSpawnerBE>> SPAWNER_BE = BLOCK_ENTITIES.register("obelisk_spawner", () -> BlockEntityType.Builder.of(ObeliskMobSpawnerBE::new, SPAWNER_BLOCK.get()).build(null));
     public static RegistryObject<BlockEntityType<ObeliskBE>> OBELISK_BE = BLOCK_ENTITIES.register("obelisk", () -> BlockEntityType.Builder.of(ObeliskBE::new, OBELISK_BLOCK.get()).build(null));
+    public static RegistryObject<BlockEntityType<ObeliskRewardBE>> OBELISK_REWARD_BE = BLOCK_ENTITIES.register("obelisk_reward", () -> BlockEntityType.Builder.of(ObeliskRewardBE::new, OBELISK_REWARD_BLOCK.get()).build(null));
 
 
     // items
     public static RegistryObject<BlockItem> OBELISK_ITEM = ITEMS.register("obelisk", () -> new BlockItem(OBELISK_BLOCK.get(), new Item.Properties().stacksTo(64)));
     public static RegistryObject<ObeliskMapItem> OBELISK_MAP_ITEM = ITEMS.register("obelisk_map", () -> new ObeliskMapItem());
-    public static RegistryObject<HomeItem> HOME_TP_BACK = ITEMS.register("home", () -> new HomeItem());
+    // public static RegistryObject<HomeItem> HOME_TP_BACK = ITEMS.register("home", () -> new HomeItem());
 
 
     public static RegistryObject<EssenceItem> WRATH = ITEMS.register("ancient_wrath", () -> new EssenceItem("Wrath"));
     public static RegistryObject<EssenceItem> ENVY = ITEMS.register("ancient_envy", () -> new EssenceItem("Envy"));
-    public static RegistryObject<EssenceItem> GREED = ITEMS.register("ancient_green", () -> new EssenceItem("Greed"));
+    public static RegistryObject<EssenceItem> GREED = ITEMS.register("ancient_greed", () -> new EssenceItem("Greed"));
 
 
     public static void initDeferred() {
