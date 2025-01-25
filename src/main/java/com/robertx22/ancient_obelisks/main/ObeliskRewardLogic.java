@@ -59,7 +59,7 @@ public class ObeliskRewardLogic {
         for (int i = 0; i < chests; i++) {
             var cpos = findNearbyFreeChestPos(world, pos);
             if (cpos != null) {
-                spawnChest(world, cpos, ObeliskLootTables.DEFAULT);
+                spawnChest(world, cpos, ObeliskLootTables.LOOT);
             }
         }
     }

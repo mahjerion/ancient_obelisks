@@ -22,6 +22,13 @@ public class ObeliskConfig {
     public ForgeConfigSpec.DoubleValue LOOT_MULTI_PER_TIER;
     public ForgeConfigSpec.DoubleValue LOOT_MULTI_PER_AFFIX;
     public ForgeConfigSpec.DoubleValue LOOT_CHANCE_PER_MOB_KILL;
+    public ForgeConfigSpec.DoubleValue OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT;
+
+
+    public ForgeConfigSpec.IntValue WAVE_COOLDOWN_SECONDS;
+    public ForgeConfigSpec.IntValue MOB_SPAWNS_PER_SECOND;
+    public ForgeConfigSpec.IntValue MOB_SPAWN_CHANCE;
+    public ForgeConfigSpec.IntValue TOTAL_MOBS_PER_WAVE;
 
 
     public static ObeliskConfig get() {
@@ -32,6 +39,20 @@ public class ObeliskConfig {
     ObeliskConfig(ForgeConfigSpec.Builder b) {
         b.comment("Ancient Obelisk Configs")
                 .push("general");
+
+        WAVE_COOLDOWN_SECONDS = b
+                .comment("When new wave starts, this cooldown has to pass before a new wave can start")
+                .defineInRange("WAVE_COOLDOWN_SECONDS", 60, 1, 1000);
+
+        MOB_SPAWNS_PER_SECOND = b
+                .defineInRange("MOB_SPAWNS_PER_SECOND", 1, 1, 50);
+
+        MOB_SPAWN_CHANCE = b.comment("You can use low mob spawn chance with high mob spawns config to more randomly spawn mobs, or keep chance high and spawn count low to spawn them consistently over time.\n" +
+                        "Do note, there's usually around 4 spawners in the arena")
+                .defineInRange("MOB_SPAWN_CHANCE", 7, 1, 100);
+
+        TOTAL_MOBS_PER_WAVE = b.comment("Each wave will have this many mobs. When the mobs are done spawning, the new wave will start, unless wave cooldown is there.")
+                .defineInRange("TOTAL_MOBS_PER_WAVE", 10, 1, 100);
 
         MAX_OBELISK_TIER = b
                 .comment("Each obelisk tier increases the Mob Stats and rewards")
@@ -64,6 +85,9 @@ public class ObeliskConfig {
                         "Make sure this value isn't too big because this chance is multiplied by tier and affix counts")
                 .defineInRange("LOOT_CHANCE_PER_MOB_KILL", 1F, 0, 100);
 
+        OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT = b
+                .comment("When you loot new chests with loot tables, obelisks have a chance to spawn instead.")
+                .defineInRange("OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT", 5F, 0, 100);
 
         b.pop();
     }

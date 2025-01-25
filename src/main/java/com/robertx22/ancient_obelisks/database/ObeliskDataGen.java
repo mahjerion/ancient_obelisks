@@ -7,7 +7,9 @@ import com.robertx22.library_of_exile.localization.ExileLangFile;
 import com.robertx22.library_of_exile.localization.ExileTranslation;
 import com.robertx22.library_of_exile.localization.ITranslated;
 import com.robertx22.library_of_exile.localization.TranslationBuilder;
+import com.robertx22.library_of_exile.recipe.RecipeGenerator;
 import com.robertx22.library_of_exile.registry.ExileRegistryType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 
@@ -29,7 +31,7 @@ public class ObeliskDataGen implements DataProvider {
         for (ITranslated t : tra) {
             t.createTranslationBuilder().build();
         }
-        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_MAP_ITEM.get(), "Obelisk Map")).build();
+        TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_MAP_ITEM.get(), ChatFormatting.DARK_PURPLE + "Obelisk Map")).build();
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.item(ObeliskEntries.OBELISK_ITEM.get(), "Obelisk")).build();
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.OBELISK_BLOCK.get(), "Obelisk")).build();
         TranslationBuilder.of(ObelisksMain.MODID).name(ExileTranslation.block(ObeliskEntries.SPAWNER_BLOCK.get(), "Obelisk Spawner")).build();
@@ -42,9 +44,8 @@ public class ObeliskDataGen implements DataProvider {
         for (ExileRegistryType type : ExileRegistryType.getAllInRegisterOrder()) {
             type.getDatapackGenerator().run(pOutput);
         }
-        //ObeliskDatabase.OBELISK_TYPE.getDatapackGenerator().run(pOutput);
-        //ObeliskDatabase.ATTRIBUTE_AFFIX.getDatapackGenerator().run(pOutput);
-        //LibDatabase..getDatapackGenerator().run(pOutput);
+
+        RecipeGenerator.generateAll(pOutput, ObelisksMain.MODID);
 
         //DataProvider.saveStable(pOutput, x.serializeRecipe(), target);
 

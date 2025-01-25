@@ -37,6 +37,12 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
             .weight(0)
             .build(this);
 
+    public ExileKey<ExileCurrency, IdKey> ADD_SPAWN_RATE = ExileCurrency.Builder.of("add_spawn_rate", "Orb of Obelisk Spawns", ObeliskItemReqs.INSTANCE.IS_OBELISK_MAP)
+            .addRequirement(ObeliskItemReqs.INSTANCE.SPAWN_RATE_CAP)
+            .addAlwaysUseModification(ObeliskItemMods.INSTANCE.ADD_SPAWN_RATE)
+            .potentialCost(0)
+            .weight(0)
+            .build(this);
 
     @Override
     public void loadClass() {
@@ -56,6 +62,15 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
             return ShapedRecipeUTIL.of(x.getItem(), 1)
                     .define('X', Items.IRON_INGOT)
                     .define('Y', ObeliskEntries.ENVY.get())
+                    .pattern("YYY")
+                    .pattern("YXY")
+                    .pattern("YYY");
+        });
+
+        ADD_SPAWN_RATE.addRecipe(OrbDatabase.CURRENCY, x -> {
+            return ShapedRecipeUTIL.of(x.getItem(), 1)
+                    .define('X', Items.DIAMOND)
+                    .define('Y', ObeliskEntries.GREED.get())
                     .pattern("YYY")
                     .pattern("YXY")
                     .pattern("YYY");

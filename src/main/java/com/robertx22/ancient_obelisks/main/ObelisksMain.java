@@ -18,14 +18,15 @@ import com.robertx22.library_of_exile.events.base.ExileEvents;
 import com.robertx22.library_of_exile.main.ApiForgeEvents;
 import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegisterInfo;
 import com.robertx22.library_of_exile.registry.util.ExileRegistryUtil;
+import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -51,7 +52,7 @@ import java.util.function.Consumer;
 
 @Mod("ancient_obelisks")
 public class ObelisksMain {
-    public static boolean RUN_DEV_TOOLS = true;
+    public static boolean RUN_DEV_TOOLS = false;
 
     public static String MODID = "ancient_obelisks";
     public static String DIMENSION_ID = "ancient_obelisks:obelisk";
@@ -160,9 +161,9 @@ public class ObelisksMain {
         });
 
 
-        ObeliskEntries.CREATIVE_TAB.register("ancient_obelisk_tab", () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 2)
+        ObeliskEntries.CREATIVE_TAB.register(MODID, () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 2)
                 .icon(() -> ObeliskEntries.OBELISK_ITEM.get().getDefaultInstance())
-                .title(Component.translatable("ancient_obelisks.name").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD))
+                .title(ObeliskWords.CREATIVE_TAB.get().withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD))
                 .displayItems(new CreativeModeTab.DisplayItemsGenerator() {
                     @Override
                     public void accept(CreativeModeTab.ItemDisplayParameters param, CreativeModeTab.Output output) {
@@ -180,7 +181,21 @@ public class ObelisksMain {
 
         ObeliskRewardLogic.init();
 
+
+        ExileEvents.ON_CHEST_LOOTED.register(new EventConsumer<ExileEvents.OnChestLooted>() {
+            @Override
+            public void accept(ExileEvents.OnChestLooted e) {
+                if (RandomUtils.roll(ObeliskConfig.get().OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT.get())) {
+                    if (!MapDimensions.isMap(e.player.level())) {
+                        e.player.level().destroyBlock(e.pos, true);
+                        e.player.level().setBlock(e.pos, ObeliskEntries.OBELISK_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+                    }
+                }
+            }
+        });
+
         System.out.println("Ancient Obelisks loaded.");
+
     }
 
     public static Optional<ObeliskMapData> ifMapData(Level level, BlockPos pos) {
