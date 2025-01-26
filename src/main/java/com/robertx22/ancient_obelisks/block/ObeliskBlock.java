@@ -48,6 +48,8 @@ public class ObeliskBlock extends BaseEntityBlock {
         be.x = start.x;
         be.z = start.z;
 
+        be.setChanged();
+
         stack.shrink(1);
 
         ObeliskMapCapability.get(p.level()).data.data.setData(p, data, ObelisksMain.OBELISK_MAP_STRUCTURE, start.getMiddleBlockPosition(5));
