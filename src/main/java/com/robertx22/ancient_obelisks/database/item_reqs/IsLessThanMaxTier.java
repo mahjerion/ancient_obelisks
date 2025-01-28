@@ -30,7 +30,7 @@ public class IsLessThanMaxTier extends ObeliskReq {
     @Override
     public TranslationBuilder createTranslationBuilder() {
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, "Obelisk Tier must be lower than %1$s"));
+                .desc(ExileTranslation.registry(this, "Obelisk Tier must be lower than %1$s"));
     }
 
     @Override

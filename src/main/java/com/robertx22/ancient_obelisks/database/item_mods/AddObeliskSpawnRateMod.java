@@ -42,7 +42,7 @@ public class AddObeliskSpawnRateMod extends ObeliskMapMod {
     public TranslationBuilder createTranslationBuilder() {
         String addword = data.spawn_rate > 0 ? "Increase" : "Decrease";
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, addword + " Mob Spawn Rate by %1$s%%"));
+                .desc(ExileTranslation.registry(this, addword + " Mob Spawn Rate by %1$s%%"));
     }
 
     @Override

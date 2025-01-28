@@ -84,7 +84,7 @@ public class ObeliskRewardLogic {
                     var check = pos.offset(x, y, z);
                     var state = world.getBlockState(check);
 
-                    if (!state.isAir()) {
+                    if (!state.isAir() && !state.is(Blocks.CHEST) && !state.is(ObeliskEntries.OBELISK_REWARD_BLOCK.get())) {
                         if (world.getBlockState(check.above()).isAir()) {
                             if (nearest == null || nearest.distSqr(pos) > check.above().distSqr(pos)) {
                                 nearest = check.above();

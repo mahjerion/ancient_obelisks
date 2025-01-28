@@ -23,7 +23,7 @@ public abstract class BeItemReq extends ItemRequirement {
 
     @Override
     public TranslationBuilder createTranslationBuilder() {
-        return new TranslationBuilder(ObelisksMain.MODID).desc(ExileTranslation.registry(ObelisksMain.MODID, this, locname));
+        return new TranslationBuilder(ObelisksMain.MODID).desc(ExileTranslation.registry(this, locname));
     }
 
 }

@@ -24,6 +24,8 @@ public class ObeliskConfig {
     public ForgeConfigSpec.DoubleValue LOOT_CHANCE_PER_MOB_KILL;
     public ForgeConfigSpec.DoubleValue OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT;
 
+    public ForgeConfigSpec.BooleanValue SKIP_COOLDOWN_IF_NO_MORE_MOBS;
+
 
     public ForgeConfigSpec.IntValue WAVE_COOLDOWN_SECONDS;
     public ForgeConfigSpec.IntValue MOB_SPAWNS_PER_SECOND;
@@ -88,6 +90,10 @@ public class ObeliskConfig {
         OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT = b
                 .comment("When you loot new chests with loot tables, obelisks have a chance to spawn instead.")
                 .defineInRange("OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT", 5F, 0, 100);
+
+        SKIP_COOLDOWN_IF_NO_MORE_MOBS = b
+                .comment("Starts new wave right away if all mobs are dead")
+                .define("SKIP_COOLDOWN_IF_NO_MORE_MOBS", true);
 
         b.pop();
     }

@@ -1,5 +1,6 @@
 package com.robertx22.ancient_obelisks.structure;
 
+import com.robertx22.ancient_obelisks.capability.ObeliskEntityCapability;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
@@ -15,9 +16,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ObeliskMapData {
     // todo
@@ -46,7 +49,19 @@ public class ObeliskMapData {
         return chance;
     }
 
+    public List<LivingEntity> getAllLivingMobs(Level world, BlockPos pos) {
+        return world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(pos.getCenter(), 35, 30, 35)).stream().filter(x -> ObeliskEntityCapability.get(x).data.isObeSpawn).collect(Collectors.toList());
+    }
+
+
     public void tryStartNewWave(Level world, BlockPos pos) {
+
+        if (waveCd > 0 && ObeliskConfig.get().SKIP_COOLDOWN_IF_NO_MORE_MOBS.get() && this.mobsLeftForWave < 1) {
+            if (getAllLivingMobs(world, pos).isEmpty()) {
+                waveCd = 0;
+            }
+        }
+
         if (waveCd-- > 0) {
             return;
         }
@@ -86,13 +101,12 @@ public class ObeliskMapData {
 
             // todo on configs with 100% spawn chance this is useless
             float spawnChance = ObeliskConfig.get().MOB_SPAWN_CHANCE.get() * item.getSpawnRateMulti();
-        
+
             if (RandomUtils.roll(spawnChance)) {
                 int toSpawn = ObeliskConfig.get().MOB_SPAWNS_PER_SECOND.get();
                 if (toSpawn > mobsLeftForWave) {
                     toSpawn = mobsLeftForWave;
                 }
-
 
                 var mobs = MobList.PREDETERMINED.getPredeterminedRandom(world, pos);
 
@@ -119,5 +133,8 @@ public class ObeliskMapData {
         }
 
         world.addFreshEntity(en);
+
+        ObeliskEntityCapability.get(en).data.isObeSpawn = true;
+
     }
 }

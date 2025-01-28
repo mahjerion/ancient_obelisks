@@ -35,7 +35,7 @@ public class ObeliskSpawnRateLimitReq extends ObeliskReq {
     @Override
     public TranslationBuilder createTranslationBuilder() {
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, "Must have less than %1$s%% Spawn Rate"));
+                .desc(ExileTranslation.registry(this, "Must have less than %1$s%% Spawn Rate"));
     }
 
     @Override

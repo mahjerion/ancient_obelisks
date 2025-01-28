@@ -25,7 +25,7 @@ public class AddObeliskWaveMod extends ObeliskMapMod {
 
     @Override
     public void modifyGear(ItemStack stack, ObeliskItemMapData data, ItemModificationResult r) {
-        for (int i = 0; i < this.data.waves; i++) {
+        for (int i = 0; i < this.data.waves(); i++) {
             data.maxWaves++;
             data.addRandomAffix();
         }
@@ -47,7 +47,7 @@ public class AddObeliskWaveMod extends ObeliskMapMod {
         String addword = data.waves > 0 ? "Add" : "Remove";
         String plural = Math.abs(data.waves) > 1 ? "s" : "";
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, addword + " %1$s Wave" + plural));
+                .desc(ExileTranslation.registry(this, addword + " %1$s Wave" + plural));
     }
 
     @Override

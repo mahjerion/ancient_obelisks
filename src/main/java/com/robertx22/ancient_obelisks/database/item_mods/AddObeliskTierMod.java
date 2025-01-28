@@ -45,7 +45,7 @@ public class AddObeliskTierMod extends ObeliskMapMod {
         String addword = data.tier > 0 ? "Add" : "Decrease";
         String plural = Math.abs(data.tier) > 1 ? "s" : "";
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, addword + " %1$s Tier" + plural));
+                .desc(ExileTranslation.registry(this, addword + " %1$s Tier" + plural));
     }
 
     @Override

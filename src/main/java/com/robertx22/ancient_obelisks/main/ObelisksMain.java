@@ -1,5 +1,6 @@
 package com.robertx22.ancient_obelisks.main;
 
+import com.robertx22.ancient_obelisks.capability.ObeliskEntityCapability;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.database.ObeliskDatabase;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
@@ -23,6 +24,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -224,5 +227,12 @@ public class ObelisksMain {
         MinecraftForge.EVENT_BUS.addGenericListener(Level.class, (Consumer<AttachCapabilitiesEvent<Level>>) x -> {
             x.addCapability(ObeliskMapCapability.RESOURCE, new ObeliskMapCapability(x.getObject()));
         });
+
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, (Consumer<AttachCapabilitiesEvent<Entity>>) x -> {
+            if (x.getObject() instanceof LivingEntity en) {
+                x.addCapability(ObeliskEntityCapability.RESOURCE, new ObeliskEntityCapability(en));
+            }
+        });
+
     }
 }

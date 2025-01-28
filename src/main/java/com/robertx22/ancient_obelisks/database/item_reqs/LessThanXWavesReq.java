@@ -36,7 +36,7 @@ public class LessThanXWavesReq extends ObeliskReq {
     public TranslationBuilder createTranslationBuilder() {
         String plural = Math.abs(data.waves) > 1 ? "s" : "";
         return TranslationBuilder.of(ObelisksMain.MODID)
-                .desc(ExileTranslation.registry(ObelisksMain.MODID, this, "Must have less than %1$s Wave" + plural));
+                .desc(ExileTranslation.registry(this, "Must have less than %1$s Wave" + plural));
     }
 
     @Override
