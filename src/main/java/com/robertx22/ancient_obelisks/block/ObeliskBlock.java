@@ -45,8 +45,8 @@ public class ObeliskBlock extends BaseEntityBlock {
         data.x = start.x;
         data.z = start.z;
 
-        be.x = start.x;
-        be.z = start.z;
+        be.x = count.x;
+        be.z = count.z;
 
         be.setChanged();
 

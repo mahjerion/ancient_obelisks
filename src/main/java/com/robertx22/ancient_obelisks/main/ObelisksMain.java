@@ -181,9 +181,8 @@ public class ObelisksMain {
 
 
         ObeliskDatabase.initRegistries();
-
+        ObeliskCommands.init();
         ObeliskRewardLogic.init();
-
 
         ExileEvents.ON_CHEST_LOOTED.register(new EventConsumer<ExileEvents.OnChestLooted>() {
             @Override

@@ -1,3 +1,5 @@
-v.1.0.3
+v.1.0.4
 
-changed translation ids
+- fixed teleports tping to wrong obelisk that's not used
+- now should ignore world borders (not sure if this works ok)
+- added command to wipe obelisk world data, to be used when wiping the dimension folders (because the data is saved on overworld)
