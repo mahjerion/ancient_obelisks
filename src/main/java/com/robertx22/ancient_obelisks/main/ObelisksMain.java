@@ -20,10 +20,12 @@ import com.robertx22.library_of_exile.main.ApiForgeEvents;
 import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegisterInfo;
 import com.robertx22.library_of_exile.registry.util.ExileRegistryUtil;
 import com.robertx22.library_of_exile.utils.RandomUtils;
+import com.robertx22.library_of_exile.utils.SoundUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -189,8 +191,12 @@ public class ObelisksMain {
             public void accept(ExileEvents.OnChestLooted e) {
                 if (RandomUtils.roll(ObeliskConfig.get().OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT.get())) {
                     if (!MapDimensions.isMap(e.player.level())) {
-                        e.player.level().destroyBlock(e.pos, true);
-                        e.player.level().setBlock(e.pos, ObeliskEntries.OBELISK_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+                        var pos = ObeliskRewardLogic.findNearbyFreeChestPos(e.player.level(), e.pos, x -> !x.isAir() && !x.hasBlockEntity(), 2);
+                        if (pos != null) {
+                            SoundUtils.playSound(e.player, SoundEvents.EXPERIENCE_ORB_PICKUP);
+                            e.player.level().setBlock(pos, ObeliskEntries.OBELISK_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+                        }
+
                     }
                 }
             }

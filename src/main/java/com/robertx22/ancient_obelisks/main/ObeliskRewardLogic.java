@@ -13,7 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class ObeliskRewardLogic {
 
@@ -75,6 +80,10 @@ public class ObeliskRewardLogic {
     }
 
     public static BlockPos findNearbyFreeChestPos(Level world, BlockPos pos) {
+        return findNearbyFreeChestPos(world, pos, state -> !state.isAir() && !state.is(Blocks.CHEST) && !state.is(ObeliskEntries.OBELISK_REWARD_BLOCK.get()), 1);
+    }
+
+    public static BlockPos findNearbyFreeChestPos(Level world, BlockPos pos, Predicate<BlockState> groundCheck, int freeBlocks) {
         BlockPos nearest = null;
         int rad = 5;
         for (int x = -rad; x < rad; x++) {
@@ -84,8 +93,12 @@ public class ObeliskRewardLogic {
                     var check = pos.offset(x, y, z);
                     var state = world.getBlockState(check);
 
-                    if (!state.isAir() && !state.is(Blocks.CHEST) && !state.is(ObeliskEntries.OBELISK_REWARD_BLOCK.get())) {
-                        if (world.getBlockState(check.above()).isAir()) {
+                    if (groundCheck.test(state)) {
+                        List<BlockPos> airChecks = new ArrayList<>();
+                        for (int i = 0; i < freeBlocks; i++) {
+                            airChecks.add(check.above());
+                        }
+                        if (airChecks.stream().allMatch(e -> world.getBlockState(e).isAir())) {
                             if (nearest == null || nearest.distSqr(pos) > check.above().distSqr(pos)) {
                                 nearest = check.above();
                             }
