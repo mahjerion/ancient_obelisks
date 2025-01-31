@@ -1,7 +1,12 @@
 package com.robertx22.ancient_obelisks.configs;
 
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class ObeliskConfig {
 
@@ -26,6 +31,8 @@ public class ObeliskConfig {
 
     public ForgeConfigSpec.BooleanValue SKIP_COOLDOWN_IF_NO_MORE_MOBS;
 
+    public ForgeConfigSpec.ConfigValue<List<? extends String>> DIMENSION_CHANCE_MULTI;
+
 
     public ForgeConfigSpec.IntValue WAVE_COOLDOWN_SECONDS;
     public ForgeConfigSpec.IntValue MOB_SPAWNS_PER_SECOND;
@@ -38,9 +45,34 @@ public class ObeliskConfig {
     }
 
 
+    public HashMap<String, Float> dimChanceMap = new HashMap<>();
+
+    public HashMap<String, Float> getDimChanceMap() {
+        if (dimChanceMap.isEmpty()) {
+            for (String s : DIMENSION_CHANCE_MULTI.get()) {
+                String dim = s.split("-")[0];
+                Float multi = Float.parseFloat(s.split("-")[1]);
+                dimChanceMap.put(dim, multi);
+            }
+        }
+
+        return dimChanceMap;
+    }
+
+
+    public float getDimChanceMulti(Level level) {
+        String dimid = level.dimensionTypeId().location().toString();
+        var map = getDimChanceMap();
+        return map.getOrDefault(dimid, 1F);
+    }
+
     ObeliskConfig(ForgeConfigSpec.Builder b) {
         b.comment("Ancient Obelisk Configs")
                 .push("general");
+
+        DIMENSION_CHANCE_MULTI = b
+                .comment("Obelisk spawn chance multi per dimension")
+                .defineList("DIMENSION_CHANCE_MULTI", () -> Arrays.asList("mmorpg:dungeon-0.1"), x -> true);
 
         WAVE_COOLDOWN_SECONDS = b
                 .comment("When new wave starts, this cooldown has to pass before a new wave can start")

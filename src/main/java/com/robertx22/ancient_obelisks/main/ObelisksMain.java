@@ -189,15 +189,20 @@ public class ObelisksMain {
         ExileEvents.ON_CHEST_LOOTED.register(new EventConsumer<ExileEvents.OnChestLooted>() {
             @Override
             public void accept(ExileEvents.OnChestLooted e) {
-                if (RandomUtils.roll(ObeliskConfig.get().OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT.get())) {
-                    if (!MapDimensions.isMap(e.player.level())) {
-                        var pos = ObeliskRewardLogic.findNearbyFreeChestPos(e.player.level(), e.pos, x -> !x.isAir() && !x.hasBlockEntity(), 2);
-                        if (pos != null) {
-                            SoundUtils.playSound(e.player, SoundEvents.EXPERIENCE_ORB_PICKUP);
-                            e.player.level().setBlock(pos, ObeliskEntries.OBELISK_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
-                        }
+                try {
+                    float chance = (float) (ObeliskConfig.get().OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT.get() * ObeliskConfig.get().getDimChanceMulti(e.player.level()));
+                    if (RandomUtils.roll(chance)) {
+                        if (!MapDimensions.isMap(e.player.level())) {
+                            var pos = ObeliskRewardLogic.findNearbyFreeChestPos(e.player.level(), e.pos, x -> !x.isAir() && !x.hasBlockEntity(), 2);
+                            if (pos != null) {
+                                SoundUtils.playSound(e.player, SoundEvents.EXPERIENCE_ORB_PICKUP);
+                                e.player.level().setBlock(pos, ObeliskEntries.OBELISK_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+                            }
 
+                        }
                     }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         });
