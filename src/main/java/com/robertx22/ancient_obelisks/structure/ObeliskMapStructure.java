@@ -23,7 +23,6 @@ public class ObeliskMapStructure extends SimplePrebuiltMapStructure {
     }
 
     public ChunkPos getStartFromCounter(int x, int z) {
-
         var start = new ChunkPos(x * ObeliskMapStructure.DUNGEON_LENGTH, z * ObeliskMapStructure.DUNGEON_LENGTH);
         start = ObelisksMain.OBELISK_MAP_STRUCTURE.getStartChunkPos(start);
         return start;

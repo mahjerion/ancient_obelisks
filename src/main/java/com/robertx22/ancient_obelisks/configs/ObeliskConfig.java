@@ -72,7 +72,7 @@ public class ObeliskConfig {
 
         DIMENSION_CHANCE_MULTI = b
                 .comment("Obelisk spawn chance multi per dimension")
-                .defineList("DIMENSION_CHANCE_MULTI", () -> Arrays.asList("mmorpg:dungeon-0.1"), x -> true);
+                .defineList("DIMENSION_CHANCE_MULTI", () -> Arrays.asList("mmorpg:dungeon-0"), x -> true);
 
         WAVE_COOLDOWN_SECONDS = b
                 .comment("When new wave starts, this cooldown has to pass before a new wave can start")
@@ -83,10 +83,10 @@ public class ObeliskConfig {
 
         MOB_SPAWN_CHANCE = b.comment("You can use low mob spawn chance with high mob spawns config to more randomly spawn mobs, or keep chance high and spawn count low to spawn them consistently over time.\n" +
                         "Do note, there's usually around 4 spawners in the arena")
-                .defineInRange("MOB_SPAWN_CHANCE", 7, 1, 100);
+                .defineInRange("MOB_SPAWN_CHANCE", 10, 1, 100);
 
         TOTAL_MOBS_PER_WAVE = b.comment("Each wave will have this many mobs. When the mobs are done spawning, the new wave will start, unless wave cooldown is there.")
-                .defineInRange("TOTAL_MOBS_PER_WAVE", 10, 1, 100);
+                .defineInRange("TOTAL_MOBS_PER_WAVE", 15, 1, 100);
 
         MAX_OBELISK_TIER = b
                 .comment("Each obelisk tier increases the Mob Stats and rewards")
@@ -117,7 +117,7 @@ public class ObeliskConfig {
                 .comment("Every mob you kill inside the obelisk will add x chance to spawn loot chests at the end.\n" +
                         "If the total is say 50, it means 50% chance to spawn a chest. If it's 150, then it's 1 chest + 50% chance for another.\n" +
                         "Make sure this value isn't too big because this chance is multiplied by tier and affix counts")
-                .defineInRange("LOOT_CHANCE_PER_MOB_KILL", 1F, 0, 100);
+                .defineInRange("LOOT_CHANCE_PER_MOB_KILL", 2F, 0, 100);
 
         OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT = b
                 .comment("When you loot new chests with loot tables, obelisks have a chance to spawn instead.")

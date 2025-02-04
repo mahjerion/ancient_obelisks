@@ -8,6 +8,7 @@ import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.library_of_exile.components.PlayerDataCapability;
+import com.robertx22.library_of_exile.utils.PlayerUtil;
 import com.robertx22.library_of_exile.utils.SoundUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -86,7 +87,7 @@ public class ObeliskBlock extends BaseEntityBlock {
                         if (!obe.gaveMap) {
                             obe.setGaveMap();
                             var map = ObeliskMapItem.blankMap();
-                            giveItem(map, p);
+                            PlayerUtil.giveItem(map, p);
                             SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
                         }
                     }
@@ -97,13 +98,6 @@ public class ObeliskBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.SUCCESS;
-    }
-
-    public static void giveItem(ItemStack stack, Player player) {
-        if (player.addItem(stack) == false) {
-            player.spawnAtLocation(stack, 1F);
-        }
-        player.getInventory().setChanged();
     }
 
 
