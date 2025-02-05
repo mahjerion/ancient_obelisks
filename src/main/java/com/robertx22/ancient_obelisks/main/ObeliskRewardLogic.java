@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
@@ -73,7 +73,7 @@ public class ObeliskRewardLogic {
 
         world.setBlock(pos, Blocks.CHEST.defaultBlockState(), Block.UPDATE_ALL);
 
-        if (world.getBlockEntity(pos) instanceof ChestBlockEntity ce) {
+        if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity ce) {
             ce.setLootTable(loottable, world.random.nextLong());
         }
 
