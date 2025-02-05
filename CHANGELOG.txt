@@ -1,3 +1,3 @@
-v.1.0.7
+v.1.0.8
 
-- buffed base obelisks, more mobs, more loot chance, faster spawns
+- obelisks now mineable normally

@@ -4,12 +4,14 @@ import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.item.ObeliskItemNbt;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
+import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.library_of_exile.components.PlayerDataCapability;
 import com.robertx22.library_of_exile.utils.PlayerUtil;
 import com.robertx22.library_of_exile.utils.SoundUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -89,6 +91,7 @@ public class ObeliskBlock extends BaseEntityBlock {
                             var map = ObeliskMapItem.blankMap();
                             PlayerUtil.giveItem(map, p);
                             SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
+                            p.sendSystemMessage(ObeliskWords.NEW_MAP_GIVEN.get().withStyle(ChatFormatting.LIGHT_PURPLE));
                         }
                     }
 

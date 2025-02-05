@@ -12,6 +12,7 @@ public enum ObeliskWords implements ITranslated {
     MAP_ITEM_USE_INFO("Right Click the [Obelisk Block] with the map to start it."),
 
     CREATIVE_TAB("Ancient Obelisks"),
+    NEW_MAP_GIVEN("The Obelisk gifts you with a Map. You can use this map to Activate the Obelisk."),
     NEW_WAVE_AFFIX("New Wave Affix: %1$s"),
     ITEM_WAVE_X("Wave %1$s"),
     MAP_LOOT_BONUS("Loot Bonus: %1$s%%"),

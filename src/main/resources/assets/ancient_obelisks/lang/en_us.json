@@ -4,6 +4,7 @@
 	"ancient_obelisks.words.last_wave": "Last Wave INCOMING!",
 	"ancient_obelisks.words.map_item_use_info": "Right Click the [Obelisk Block] with the map to start it.",
 	"ancient_obelisks.words.map_loot_bonus": "Loot Bonus: %1$s%%",
+	"ancient_obelisks.words.new_map_given": "The Obelisk gifts you with a Map. You can use this map to Activate the Obelisk.",
 	"ancient_obelisks.words.new_wave_affix": "New Wave Affix: %1$s",
 	"ancient_obelisks.words.obelisk_end": "The magic of the Obelisk fades",
 	"ancient_obelisks.words.obelisk_tier_x": "Obelisk Tier: %1$s",
