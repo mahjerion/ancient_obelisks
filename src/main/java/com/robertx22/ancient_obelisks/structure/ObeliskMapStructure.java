@@ -9,6 +9,12 @@ import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.world.level.ChunkPos;
 
 public class ObeliskMapStructure extends SimplePrebuiltMapStructure {
+    
+    @Override
+    public String guid() {
+        return ObelisksMain.DIMENSION_ID;
+    }
+
     @Override
     public SimplePrebuiltMapData getMap(ChunkPos start) {
         var random = MapGenerationUTIL.createRandom(start);
