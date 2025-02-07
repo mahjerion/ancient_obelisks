@@ -47,3 +47,11 @@ publishMods {
         requires { slug = "orbs-of-crafting" }
     }
 }
+
+wiki {
+    docs {
+        mutils {
+            root = file("docs")
+        }
+    }
+}

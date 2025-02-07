@@ -1,0 +1,19 @@
+# How to create your own Obelisk Arena?
+
+For this you need to create an ancient_obelisks/ancient_obelisks_obelisk datapack
+Note: I started using modid in folder names after bugs with other mods that used same folder names
+
+You must create a json for your arena:
+- copy an existing json from the mod jar
+- edit rooms_folder to point to your structure nbts
+- size means how big your structure is. A size of 1 means 2x2, so 4 structure blocks.
+The way it works is it checks for any structures with names 0_0, 0_1, 1_1, and 1_0. A size of 2 would go up to 2_2 etc, making it a 3x3, so 9 structure pieces.
+- Structure files must be max 16x[height]x16, height can be maximum possible
+
+The arena must have command blocks with these ids:
+- obelisk_spawner (put 4 or so of these, this is where mobs will spawn)
+- obelisk_reward (put 1, either in the middle of the room or some place you want the rewards to spawn, ideally the player should see it right away)
+- teleport_back_block (so players can return home, or to their last teleport loc)
+
+That's it, have fun creating custom obelisk arenas!
+
