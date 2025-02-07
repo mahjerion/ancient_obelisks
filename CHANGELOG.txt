@@ -1,5 +1,6 @@
-v.1.0.11
+v.1.0.12
 
 - heavily reduced crafting orb costs, now you craft 8 orbs instead of 1!
 Should be now possible to easily keep maxing out obelisk maps
 - added temporary creative mode debug messages
+- fixed data error

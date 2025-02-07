@@ -1,6 +1,5 @@
 package com.robertx22.ancient_obelisks.structure;
 
-import com.google.gson.JsonSyntaxException;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.registry.IAutoGson;
 import net.minecraft.core.Direction;
@@ -66,7 +65,10 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
             if (nbt.contains("data")) {
                 this.data = IAutoGson.GSON.fromJson(nbt.getString("data"), ObeliskWorldData.class);
             }
-        } catch (JsonSyntaxException e) {
+            if (data == null) {
+                data = new ObeliskWorldData();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
