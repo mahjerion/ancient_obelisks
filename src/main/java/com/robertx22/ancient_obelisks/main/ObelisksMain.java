@@ -24,10 +24,12 @@ import com.robertx22.library_of_exile.utils.SoundUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -77,6 +79,12 @@ public class ObelisksMain {
         return MapDimensionConfig.get(DIMENSION_KEY);
     }
 
+
+    public static void debugMsg(Player p, String s) {
+        if (p.isCreative()) {
+            p.sendSystemMessage(Component.literal("[Debug Info]:" + s));
+        }
+    }
 
     public ObelisksMain() {
 

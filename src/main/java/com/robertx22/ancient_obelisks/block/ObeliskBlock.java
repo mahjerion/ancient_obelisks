@@ -77,13 +77,15 @@ public class ObeliskBlock extends BaseEntityBlock {
             var be = world.getBlockEntity(pPos);
 
             if (be instanceof ObeliskBE obe) {
-
                 ItemStack stack = p.getMainHandItem();
 
                 if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
+                    ObelisksMain.debugMsg(p, "Trying to start new map");
                     startNewMap(p, stack, obe);
+                    ObelisksMain.debugMsg(p, "Map started");
                 } else {
                     if (obe.isActivated()) {
+                        ObelisksMain.debugMsg(p, "Trying to join existing map");
                         joinCurrentMap(p, obe);
                     } else {
                         if (!obe.gaveMap) {
@@ -92,11 +94,14 @@ public class ObeliskBlock extends BaseEntityBlock {
                             PlayerUtil.giveItem(map, p);
                             SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
                             p.sendSystemMessage(ObeliskWords.NEW_MAP_GIVEN.get().withStyle(ChatFormatting.LIGHT_PURPLE));
+                        } else {
+                            ObelisksMain.debugMsg(p, "Obelisk is not activated and already gave a map");
                         }
                     }
 
                 }
-
+            } else {
+                ObelisksMain.debugMsg(p, "Missing Block entity");
             }
         }
 

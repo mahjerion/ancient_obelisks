@@ -50,7 +50,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
         // todo make custom items: wrath/envy etc of the ancients
 
         ADD_WAVE.addRecipe(OrbDatabase.CURRENCY, x -> {
-            return ShapedRecipeUTIL.of(x.getItem(), 1)
+            return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.IRON_INGOT)
                     .define('Y', ObeliskEntries.WRATH.get())
                     .pattern("YYY")
@@ -59,7 +59,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
         });
 
         ADD_TIER.addRecipe(OrbDatabase.CURRENCY, x -> {
-            return ShapedRecipeUTIL.of(x.getItem(), 1)
+            return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.IRON_INGOT)
                     .define('Y', ObeliskEntries.ENVY.get())
                     .pattern("YYY")
@@ -68,7 +68,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
         });
 
         ADD_SPAWN_RATE.addRecipe(OrbDatabase.CURRENCY, x -> {
-            return ShapedRecipeUTIL.of(x.getItem(), 1)
+            return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.DIAMOND)
                     .define('Y', ObeliskEntries.GREED.get())
                     .pattern("YYY")
