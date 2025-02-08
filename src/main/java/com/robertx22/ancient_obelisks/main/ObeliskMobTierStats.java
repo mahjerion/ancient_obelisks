@@ -30,7 +30,7 @@ public class ObeliskMobTierStats {
         float dmg = ObeliskConfig.get().MOB_DMG_PER_TIER.get().floatValue() * tier;
 
         AttributeModifier mod = new AttributeModifier(
-                HP,
+                DMG,
                 Attributes.ATTACK_DAMAGE.getDescriptionId(),
                 dmg,
                 AttributeModifier.Operation.MULTIPLY_TOTAL
@@ -41,17 +41,21 @@ public class ObeliskMobTierStats {
 
     public static void tryApply(LivingEntity en, ObeliskMapData data) {
 
-        int tier = data.item.tier;
+        try {
+            int tier = data.item.tier;
 
-        if (tier > 0) {
-            var at = en.getAttributes();
+            if (tier > 0) {
+                var at = en.getAttributes();
 
-            if (!at.hasModifier(Attributes.MAX_HEALTH, HP) && en.getAttribute(Attributes.MAX_HEALTH) != null) {
-                en.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(hpMod(tier));
+                if (!at.hasModifier(Attributes.MAX_HEALTH, HP) && en.getAttribute(Attributes.MAX_HEALTH) != null) {
+                    en.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(hpMod(tier));
+                }
+                if (!at.hasModifier(Attributes.ATTACK_DAMAGE, DMG) && en.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+                    en.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(dmgMod(tier));
+                }
             }
-            if (!at.hasModifier(Attributes.ATTACK_DAMAGE, DMG) && en.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-                en.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(dmgMod(tier));
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
