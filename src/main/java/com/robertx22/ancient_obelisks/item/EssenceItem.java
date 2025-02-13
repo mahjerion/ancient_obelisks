@@ -21,4 +21,8 @@ public class EssenceItem extends Item implements ITranslated {
                 .desc(ExileTranslation.item(this, "Essence of Ancient " + name));
     }
 
+    @Override
+    public String GUID() {
+        return "";
+    }
 }

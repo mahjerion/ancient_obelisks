@@ -33,6 +33,8 @@ public class ObeliskItemMapData {
 
     public int maxWaves = 0;
 
+    public boolean relic = false;
+
 
     public List<Component> getTierTooltip() {
         List<Component> all = new ArrayList<>();

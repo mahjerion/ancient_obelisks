@@ -1,19 +1,28 @@
-# How to create your own Obelisk Arena?
+# Can I create my own maps?
+
+Yes! All you need to do is create all the rooms, save them as structure blocks and list their names in the dungeon datapack json.
+Though there are a lot of details involved
+
+# How to create your own Dungeon Map?
+
+TODO
 
 For this you need to create an ancient_obelisks/ancient_obelisks_obelisk datapack
 Note: I started using modid in folder names after bugs with other mods that used same folder names
 
 You must create a json for your arena:
 - copy an existing json from the mod jar
-- edit rooms_folder to point to your structure nbts
-- size means how big your structure is. A size of 1 means 2x2, so 4 structure blocks.
-The way it works is it checks for any structures with names 0_0, 0_1, 1_1, and 1_0. A size of 2 would go up to 2_2 etc, making it a 3x3, so 9 structure pieces.
+- make sure each type has at least 1 room
 - Structure files must be max 16x[height]x16, height can be maximum possible
 
-The arena must have command blocks with these ids:
-- obelisk_spawner (put 4 or so of these, this is where mobs will spawn)
-- obelisk_reward (put 1, either in the middle of the room or some place you want the rewards to spawn, ideally the player should see it right away)
-- teleport_back_block (so players can return home, or to their last teleport loc)
 
-That's it, have fun creating custom obelisk arenas!
+
+To actually spawn content in these maps, you need use command blocks with data 'tags' or ids.
+Basically the Mod detects the text inside command blocks in the Dungeon Realm, and spawns content accordingly when a player is nearby.
+For example, the most common id: 'mob' spawns about 1-2 random mobs at the location.
+
+TODO auto gen these.
+
+
+That's it, have fun creating custom Dungeon Maps!
 

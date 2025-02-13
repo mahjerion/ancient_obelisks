@@ -2,11 +2,12 @@ package com.robertx22.ancient_obelisks.structure;
 
 import com.robertx22.ancient_obelisks.capability.ObeliskEntityCapability;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
+import com.robertx22.ancient_obelisks.database.holders.ObeliskRelicStats;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.library_of_exile.components.LibMapCap;
 import com.robertx22.library_of_exile.database.affix.base.ExileAffixData;
-import com.robertx22.library_of_exile.database.mob_list.MobList;
 import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -70,6 +71,13 @@ public class ObeliskMapData {
         currentWave++;
         mobsLeftForWave = ObeliskConfig.get().TOTAL_MOBS_PER_WAVE.get();
 
+        var data = LibMapCap.getData(world, pos);
+        if (data != null) {
+            float multi = 1F + data.relicStats.get(ObeliskRelicStats.INSTANCE.TOTAL_WAVE_MOBS.get()) / 100F;
+            mobsLeftForWave *= multi;
+        }
+
+
         for (Player p : ObelisksMain.OBELISK_MAP_STRUCTURE.getAllPlayersInMap(world, pos)) {
             if (currentWave == (item.maxWaves - 1)) {
                 p.sendSystemMessage(ObeliskWords.LAST_WAVE.get(currentWave).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
@@ -102,13 +110,21 @@ public class ObeliskMapData {
             // todo on configs with 100% spawn chance this is useless
             float spawnChance = ObeliskConfig.get().MOB_SPAWN_CHANCE.get() * item.getSpawnRateMulti();
 
+
+            var data = LibMapCap.getData(world, pos);
+            if (data != null) {
+                float multi = 1F + data.relicStats.get(ObeliskRelicStats.INSTANCE.MOB_SPAWN_CHANCE.get()) / 100F;
+                spawnChance *= multi;
+            }
+
+
             if (RandomUtils.roll(spawnChance)) {
                 int toSpawn = ObeliskConfig.get().MOB_SPAWNS_PER_SECOND.get();
                 if (toSpawn > mobsLeftForWave) {
                     toSpawn = mobsLeftForWave;
                 }
 
-                var mobs = MobList.PREDETERMINED.getPredeterminedRandom(world, pos);
+                var mobs = ObelisksMain.MOB_SPAWNS.getPredeterminedRandom(world, pos);
 
                 List<Direction> dirs = Arrays.asList(Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH);
 

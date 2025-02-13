@@ -2,7 +2,7 @@ package com.robertx22.ancient_obelisks.capability;
 
 import com.google.gson.JsonSyntaxException;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
-import com.robertx22.library_of_exile.registry.IAutoGson;
+import com.robertx22.library_of_exile.utils.LoadSave;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class ObeliskEntityCapability implements ICapabilityProvider, INBTSeriali
     }
 
     public static ObeliskEntityCapability get(LivingEntity entity) {
-        return entity.getServer().overworld().getCapability(INSTANCE).orElse(new ObeliskEntityCapability(entity));
+        return entity.getCapability(INSTANCE).orElse(new ObeliskEntityCapability(entity));
     }
 
     public ObeliskEntityData data = new ObeliskEntityData();
@@ -50,7 +50,9 @@ public class ObeliskEntityCapability implements ICapabilityProvider, INBTSeriali
         var nbt = new CompoundTag();
 
         try {
-            nbt.putString("data", IAutoGson.GSON.toJson(data));
+
+            LoadSave.Save(data, nbt, "data");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,9 +65,8 @@ public class ObeliskEntityCapability implements ICapabilityProvider, INBTSeriali
     public void deserializeNBT(CompoundTag nbt) {
 
         try {
-            if (nbt.contains("data")) {
-                this.data = IAutoGson.GSON.fromJson(nbt.getString("data"), ObeliskEntityData.class);
-            }
+            this.data = LoadSave.loadOrBlank(ObeliskEntityData.class, new ObeliskEntityData(), nbt, "data", new ObeliskEntityData());
+
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }

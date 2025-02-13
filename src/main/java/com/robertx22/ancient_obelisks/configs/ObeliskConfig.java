@@ -120,7 +120,7 @@ public class ObeliskConfig {
                 .defineInRange("LOOT_CHANCE_PER_MOB_KILL", 2F, 0, 100);
 
         OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT = b
-                .comment("When you loot new chests with loot tables, obelisks have a chance to spawn instead.")
+                .comment("When you loot new chests with loot tables, obelisk maps have a chance to spawn as extra loot")
                 .defineInRange("OBELISK_SPAWN_CHANCE_ON_CHEST_LOOT", 5F, 0, 100);
 
         SKIP_COOLDOWN_IF_NO_MORE_MOBS = b

@@ -8,6 +8,7 @@ import com.robertx22.ancient_obelisks.block_entity.ObeliskMobSpawnerBE;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskRewardBE;
 import com.robertx22.ancient_obelisks.item.EssenceItem;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
+import com.robertx22.library_of_exile.database.relic.relic_type.RelicItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -47,6 +48,8 @@ public class ObeliskEntries {
     public static RegistryObject<EssenceItem> WRATH = ITEMS.register("ancient_wrath", () -> new EssenceItem("Wrath"));
     public static RegistryObject<EssenceItem> ENVY = ITEMS.register("ancient_envy", () -> new EssenceItem("Envy"));
     public static RegistryObject<EssenceItem> GREED = ITEMS.register("ancient_greed", () -> new EssenceItem("Greed"));
+
+    public static RegistryObject<Item> RELIC = ITEMS.register("relic", () -> new RelicItem());
 
 
     public static void initDeferred() {

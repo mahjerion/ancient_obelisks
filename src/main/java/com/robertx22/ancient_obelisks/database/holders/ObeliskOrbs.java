@@ -2,12 +2,12 @@ package com.robertx22.ancient_obelisks.database.holders;
 
 import com.robertx22.ancient_obelisks.main.ObeliskEntries;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
+import com.robertx22.library_of_exile.database.init.LibDatabase;
 import com.robertx22.library_of_exile.deferred.RegObj;
 import com.robertx22.library_of_exile.registry.helpers.ExileKey;
 import com.robertx22.library_of_exile.registry.helpers.ExileKeyHolder;
 import com.robertx22.library_of_exile.registry.helpers.IdKey;
 import com.robertx22.library_of_exile.registry.register_info.ModRequiredRegisterInfo;
-import com.robertx22.orbs_of_crafting.main.OrbDatabase;
 import com.robertx22.orbs_of_crafting.misc.ShapedRecipeUTIL;
 import com.robertx22.orbs_of_crafting.register.ExileCurrency;
 import net.minecraft.world.item.Item;
@@ -49,7 +49,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
 
         // todo make custom items: wrath/envy etc of the ancients
 
-        ADD_WAVE.addRecipe(OrbDatabase.CURRENCY, x -> {
+        ADD_WAVE.addRecipe(LibDatabase.CURRENCY, x -> {
             return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.IRON_INGOT)
                     .define('Y', ObeliskEntries.WRATH.get())
@@ -58,7 +58,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
                     .pattern("YYY");
         });
 
-        ADD_TIER.addRecipe(OrbDatabase.CURRENCY, x -> {
+        ADD_TIER.addRecipe(LibDatabase.CURRENCY, x -> {
             return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.IRON_INGOT)
                     .define('Y', ObeliskEntries.ENVY.get())
@@ -67,7 +67,7 @@ public class ObeliskOrbs extends ExileKeyHolder<ExileCurrency> {
                     .pattern("YYY");
         });
 
-        ADD_SPAWN_RATE.addRecipe(OrbDatabase.CURRENCY, x -> {
+        ADD_SPAWN_RATE.addRecipe(LibDatabase.CURRENCY, x -> {
             return ShapedRecipeUTIL.of(x.getItem(), 8)
                     .define('X', Items.DIAMOND)
                     .define('Y', ObeliskEntries.GREED.get())

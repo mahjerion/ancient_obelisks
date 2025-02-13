@@ -37,6 +37,10 @@ public class ObeliskClient {
 
                     tip.add(Component.empty());
 
+                    if (map.relic) {
+                        tip.add(ObeliskWords.RELIC_MAP.get().withStyle(ChatFormatting.LIGHT_PURPLE));
+                    }
+
                     tip.add(ObeliskWords.MAP_ITEM_USE_INFO.get().withStyle(ChatFormatting.BLUE));
 
                     ExileTooltipUtils.removeBlankLines(tip, ExileTooltipUtils.RemoveOption.ONLY_DOUBLE_BLANK_LINES);

@@ -4,11 +4,13 @@ import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.item.ObeliskItemNbt;
 import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
+import com.robertx22.ancient_obelisks.main.ObeliskEntries;
 import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.library_of_exile.components.PlayerDataCapability;
+import com.robertx22.library_of_exile.dimension.MapDimensions;
 import com.robertx22.library_of_exile.utils.PlayerUtil;
 import com.robertx22.library_of_exile.utils.SoundUtils;
 import net.minecraft.ChatFormatting;
@@ -26,11 +28,29 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObeliskBlock extends BaseEntityBlock {
     public ObeliskBlock() {
         super(BlockBehaviour.Properties.of().strength(10).noOcclusion().lightLevel(x -> 10));
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
+
+        List<ItemStack> all = new ArrayList<>();
+        BlockEntity blockentity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+
+        if (blockentity instanceof ObeliskBE be) {
+            all.add(asItem().getDefaultInstance());
+        }
+
+        return all;
     }
 
     public static void startNewMap(Player p, ItemStack stack, ObeliskBE be) {
@@ -80,6 +100,13 @@ public class ObeliskBlock extends BaseEntityBlock {
                 ItemStack stack = p.getMainHandItem();
 
                 if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
+                    ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
+
+                    if (map.relic && !MapDimensions.isMap(world)) {
+                        p.sendSystemMessage(ObeliskWords.RELIC_MAPS_ONLY.get().withStyle(ChatFormatting.RED));
+                        return InteractionResult.SUCCESS;
+                    }
+
                     ObelisksMain.debugMsg(p, "Trying to start new map");
                     startNewMap(p, stack, obe);
                     ObelisksMain.debugMsg(p, "Map started");
@@ -88,14 +115,17 @@ public class ObeliskBlock extends BaseEntityBlock {
                         ObelisksMain.debugMsg(p, "Trying to join existing map");
                         joinCurrentMap(p, obe);
                     } else {
-                        if (!obe.gaveMap) {
-                            obe.setGaveMap();
-                            var map = ObeliskMapItem.blankMap();
-                            PlayerUtil.giveItem(map, p);
-                            SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
-                            p.sendSystemMessage(ObeliskWords.NEW_MAP_GIVEN.get().withStyle(ChatFormatting.LIGHT_PURPLE));
-                        } else {
-                            ObelisksMain.debugMsg(p, "Obelisk is not activated and already gave a map");
+                        // only obelisks found in maps give maps
+                        if (MapDimensions.isMap(world)) {
+                            if (!obe.gaveMap) {
+                                obe.setGaveMap();
+                                var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
+                                PlayerUtil.giveItem(map, p);
+                                SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
+                                p.sendSystemMessage(ObeliskWords.NEW_MAP_GIVEN.get().withStyle(ChatFormatting.LIGHT_PURPLE));
+                            } else {
+                                ObelisksMain.debugMsg(p, "Obelisk is not activated and already gave a map");
+                            }
                         }
                     }
 

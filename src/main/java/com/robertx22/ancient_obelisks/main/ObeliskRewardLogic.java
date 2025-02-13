@@ -1,7 +1,9 @@
 package com.robertx22.ancient_obelisks.main;
 
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
+import com.robertx22.ancient_obelisks.database.holders.ObeliskRelicStats;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
+import com.robertx22.library_of_exile.components.LibMapCap;
 import com.robertx22.library_of_exile.main.ApiForgeEvents;
 import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
@@ -59,6 +61,13 @@ public class ObeliskRewardLogic {
         }
         if (chests < 1) {
             chests = 1; // compensation prize lol
+        }
+
+        var data = LibMapCap.getData(world, pos);
+        if (data != null) {
+            if (RandomUtils.roll(data.relicStats.get(ObeliskRelicStats.INSTANCE.TRIPLE_CHEST_REWARD_CHANCE))) {
+                chests *= 3;
+            }
         }
 
         for (int i = 0; i < chests; i++) {

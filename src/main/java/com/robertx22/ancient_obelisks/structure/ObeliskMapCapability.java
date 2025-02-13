@@ -1,7 +1,7 @@
 package com.robertx22.ancient_obelisks.structure;
 
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
-import com.robertx22.library_of_exile.registry.IAutoGson;
+import com.robertx22.library_of_exile.utils.LoadSave;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -49,7 +49,8 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
         var nbt = new CompoundTag();
 
         try {
-            nbt.putString("data", IAutoGson.GSON.toJson(data));
+            LoadSave.Save(data, nbt, "data");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,12 +63,9 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
     public void deserializeNBT(CompoundTag nbt) {
 
         try {
-            if (nbt.contains("data")) {
-                this.data = IAutoGson.GSON.fromJson(nbt.getString("data"), ObeliskWorldData.class);
-            }
-            if (data == null) {
-                data = new ObeliskWorldData();
-            }
+
+            this.data = LoadSave.loadOrBlank(ObeliskWorldData.class, new ObeliskWorldData(), nbt, "data", new ObeliskWorldData());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,9 +1,12 @@
 package com.robertx22.ancient_obelisks.database;
 
+import com.robertx22.library_of_exile.database.mob_list.MobList;
+import com.robertx22.library_of_exile.database.mob_list.MobListTags;
 import com.robertx22.library_of_exile.dimension.structure.SimplePrebuiltMapData;
 import com.robertx22.library_of_exile.registry.ExileRegistryType;
 import com.robertx22.library_of_exile.registry.IAutoGson;
 import com.robertx22.library_of_exile.registry.JsonExileRegistry;
+import com.robertx22.library_of_exile.tags.ExileTagRequirement;
 
 public class Obelisk implements JsonExileRegistry<Obelisk>, IAutoGson<Obelisk> {
     public static Obelisk SERIALIZER = new Obelisk(new SimplePrebuiltMapData(1, ""), 0, "empty");
@@ -12,6 +15,7 @@ public class Obelisk implements JsonExileRegistry<Obelisk>, IAutoGson<Obelisk> {
 
     public int weight = 1000;
     public String id = "";
+    public ExileTagRequirement<MobList> mob_list_tag_check = new ExileTagRequirement().createBuilder().includes(MobListTags.MAP).build();
 
     public Obelisk(SimplePrebuiltMapData simple_prebuilt_map, int weight, String id) {
         this.simple_prebuilt_map = simple_prebuilt_map;
