@@ -19,7 +19,7 @@ public class ObeliskMapStructure extends SimplePrebuiltMapStructure {
 
     @Override
     public SimplePrebuiltMapData getMap(ChunkPos start) {
-        return getObelisk(start).simple_prebuilt_map;
+        return getObelisk(start).structure_data;
     }
 
     public Obelisk getObelisk(ChunkPos start) {
