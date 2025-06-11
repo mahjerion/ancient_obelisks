@@ -13,6 +13,7 @@ import com.robertx22.library_of_exile.components.PlayerDataCapability;
 import com.robertx22.library_of_exile.dimension.MapDimensions;
 import com.robertx22.library_of_exile.utils.PlayerUtil;
 import com.robertx22.library_of_exile.utils.SoundUtils;
+import com.robertx22.library_of_exile.utils.TeleportUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -59,7 +60,7 @@ public class ObeliskBlock extends BaseEntityBlock {
 
         var count = map.getOrSetStartPos(p.level(), stack);
         var start = ObelisksMain.OBELISK_MAP_STRUCTURE.getStartFromCounter(count.x, count.z);
-        var pos = ObelisksMain.OBELISK_MAP_STRUCTURE.getSpawnTeleportPos(start.getMiddleBlockPosition(5));
+        var pos = TeleportUtils.getSpawnTeleportPos(ObelisksMain.OBELISK_MAP_STRUCTURE, start.getMiddleBlockPosition(5));
 
         var pdata = PlayerDataCapability.get(p);
 
@@ -84,7 +85,7 @@ public class ObeliskBlock extends BaseEntityBlock {
     public static void joinCurrentMap(Player p, ObeliskBE be) {
 
         var start = ObelisksMain.OBELISK_MAP_STRUCTURE.getStartFromCounter(be.x, be.z);
-        var pos = ObelisksMain.OBELISK_MAP_STRUCTURE.getSpawnTeleportPos(start.getMiddleBlockPosition(5));
+        var pos = TeleportUtils.getSpawnTeleportPos(ObelisksMain.OBELISK_MAP_STRUCTURE, start.getMiddleBlockPosition(5));
         var pdata = PlayerDataCapability.get(p);
         pdata.mapTeleports.entranceTeleportLogic(p, ObelisksMain.DIMENSION_KEY, pos);
     }

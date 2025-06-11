@@ -11,14 +11,14 @@ import com.robertx22.library_of_exile.tags.ExileTagRequirement;
 public class Obelisk implements JsonExileRegistry<Obelisk>, IAutoGson<Obelisk> {
     public static Obelisk SERIALIZER = new Obelisk(new SimplePrebuiltMapData(1, ""), 0, "empty");
 
-    public SimplePrebuiltMapData simple_prebuilt_map = null;
+    public SimplePrebuiltMapData structure_data = null;
 
     public int weight = 1000;
     public String id = "";
     public ExileTagRequirement<MobList> mob_list_tag_check = new ExileTagRequirement().createBuilder().includes(MobListTags.MAP).build();
 
     public Obelisk(SimplePrebuiltMapData simple_prebuilt_map, int weight, String id) {
-        this.simple_prebuilt_map = simple_prebuilt_map;
+        this.structure_data = simple_prebuilt_map;
         this.weight = weight;
         this.id = id;
     }
