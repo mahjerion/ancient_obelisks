@@ -72,6 +72,9 @@ public class ObeliskBlock extends BaseEntityBlock {
         be.x = count.x;
         be.z = count.z;
 
+        be.currentWorldUUID = ObeliskMapCapability.get(p.level()).data.data.uuid;
+
+
         be.setChanged();
 
         stack.shrink(1);

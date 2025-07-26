@@ -1,10 +1,2 @@
-v.1.1.0
-
-- removed orbs of crafting dependency
-- data blocks are now only checked once per chunk
-- chests now only provide obelisk maps instead of spawning an obelisk, except in dungeon realm mod
-
-Obelisks+Dungeon Realm Mod:
-- obelisks can now spawn in the dungeon realm mod as bonus content
-- obelisks spawned in dungeon realm now give Relic type obelisk maps, which are maps only usable inside the realm
-- dungeon relics!
+v.1.2.1
+- added dim wipe on boot

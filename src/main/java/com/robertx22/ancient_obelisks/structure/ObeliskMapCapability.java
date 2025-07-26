@@ -33,6 +33,7 @@ public class ObeliskMapCapability implements ICapabilityProvider, INBTSerializab
         return entity.getServer().overworld().getCapability(INSTANCE).orElse(new ObeliskMapCapability(entity));
     }
 
+
     public ObeliskWorldData data = new ObeliskWorldData();
 
     @Override

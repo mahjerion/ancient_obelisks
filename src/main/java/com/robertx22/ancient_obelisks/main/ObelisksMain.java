@@ -9,6 +9,7 @@ import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapStructure;
+import com.robertx22.ancient_obelisks.structure.ObeliskWorldData;
 import com.robertx22.library_of_exile.config.map_dimension.MapDimensionConfigDefaults;
 import com.robertx22.library_of_exile.config.map_dimension.MapRegisterBuilder;
 import com.robertx22.library_of_exile.database.affix.base.ExileAffixData;
@@ -34,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -88,7 +90,12 @@ public class ObelisksMain {
             Arrays.asList(),
             new ObeliskMobValidator(),
             new MapDimensionConfigDefaults(3, 2)
-    );
+    ) {
+        @Override
+        public void clearMapDataOnFolderWipe(MinecraftServer minecraftServer) {
+            ObeliskMapCapability.get(minecraftServer.overworld()).data = new ObeliskWorldData();
+        }
+    };
 
 
     public static void debugMsg(Player p, String s) {
