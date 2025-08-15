@@ -134,10 +134,15 @@ public class ObeliskBlock extends BaseEntityBlock {
             obe.setGaveMap();
             var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
             startNewMap(p, map, obe);
-        } else {
-            ObelisksMain.debugMsg(p, "Obelisk already initialized");
-            joinCurrentMap(p, obe);
         }
+        ObelisksMain.debugMsg(p, "Obelisk already initialized");
+
+        if (!obe.isActivated()) {
+            ObelisksMain.debugMsg(p, "Obelisk is not activated");
+            return;
+        }
+
+        joinCurrentMap(p, obe);
     }
 
 
