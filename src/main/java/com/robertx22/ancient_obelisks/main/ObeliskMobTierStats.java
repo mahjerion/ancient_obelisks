@@ -3,6 +3,7 @@ package com.robertx22.ancient_obelisks.main;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
@@ -45,13 +46,17 @@ public class ObeliskMobTierStats {
             int tier = data.item.tier;
 
             if (tier > 0) {
-                var at = en.getAttributes();
+                var attributes = en.getAttributes();
 
-                if (!at.hasModifier(Attributes.MAX_HEALTH, HP) && en.getAttribute(Attributes.MAX_HEALTH) != null) {
-                    en.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(hpMod(tier));
+                AttributeInstance maxHealthAttribute = en.getAttribute(Attributes.MAX_HEALTH);
+                if (!attributes.hasModifier(Attributes.MAX_HEALTH, HP) && maxHealthAttribute != null) {
+                    maxHealthAttribute.addPermanentModifier(hpMod(tier));
+                    en.setHealth((int) maxHealthAttribute.getValue());
                 }
-                if (!at.hasModifier(Attributes.ATTACK_DAMAGE, DMG) && en.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-                    en.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(dmgMod(tier));
+
+                AttributeInstance attackDamageAttribute = en.getAttribute(Attributes.ATTACK_DAMAGE);
+                if (!attributes.hasModifier(Attributes.ATTACK_DAMAGE, DMG) && attackDamageAttribute != null) {
+                    attackDamageAttribute.addPermanentModifier(dmgMod(tier));
                 }
             }
         } catch (Exception e) {
