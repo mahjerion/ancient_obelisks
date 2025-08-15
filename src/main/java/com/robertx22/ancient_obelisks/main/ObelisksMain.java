@@ -50,7 +50,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -177,14 +177,12 @@ public class ObelisksMain {
             }
         });
 
-        ApiForgeEvents.registerForgeEvent(LivingEvent.LivingTickEvent.class, event -> {
+        ApiForgeEvents.registerForgeEvent(MobSpawnEvent.class, event -> {
             var en = event.getEntity();
             if (!en.level().isClientSide) {
-                if (en.tickCount == 2) {
-                    ifMapData(event.getEntity().level(), event.getEntity().blockPosition()).ifPresent(x -> {
-                        ObeliskMobTierStats.tryApply(en, x);
-                    });
-                }
+                ifMapData(event.getEntity().level(), event.getEntity().blockPosition()).ifPresent(x -> {
+                    ObeliskMobTierStats.tryApply(en, x);
+                });
             }
         });
 
