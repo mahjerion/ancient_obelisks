@@ -11,12 +11,9 @@ import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.library_of_exile.components.PlayerDataCapability;
 import com.robertx22.library_of_exile.dimension.MapDimensions;
-import com.robertx22.library_of_exile.utils.PlayerUtil;
-import com.robertx22.library_of_exile.utils.SoundUtils;
 import com.robertx22.library_of_exile.utils.TeleportUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -103,6 +100,12 @@ public class ObeliskBlock extends BaseEntityBlock {
             if (be instanceof ObeliskBE obe) {
                 ItemStack stack = p.getMainHandItem();
 
+                if (MapDimensions.isMap(world)) {
+                    joinMapSpecificObelisk(p, obe);
+
+                    return InteractionResult.SUCCESS;
+                }
+
                 if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
                     ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
 
@@ -114,25 +117,9 @@ public class ObeliskBlock extends BaseEntityBlock {
                     ObelisksMain.debugMsg(p, "Trying to start new map");
                     startNewMap(p, stack, obe);
                     ObelisksMain.debugMsg(p, "Map started");
-                } else {
-                    if (obe.isActivated()) {
-                        ObelisksMain.debugMsg(p, "Trying to join existing map");
-                        joinCurrentMap(p, obe);
-                    } else {
-                        // only obelisks found in maps give maps
-                        if (MapDimensions.isMap(world)) {
-                            if (!obe.gaveMap) {
-                                obe.setGaveMap();
-                                var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
-                                PlayerUtil.giveItem(map, p);
-                                SoundUtils.playSound(p, SoundEvents.ITEM_PICKUP);
-                                p.sendSystemMessage(ObeliskWords.NEW_MAP_GIVEN.get().withStyle(ChatFormatting.LIGHT_PURPLE));
-                            } else {
-                                ObelisksMain.debugMsg(p, "Obelisk is not activated and already gave a map");
-                            }
-                        }
-                    }
-
+                } else if (obe.isActivated()) {
+                    ObelisksMain.debugMsg(p, "Trying to join existing map");
+                    joinCurrentMap(p, obe);
                 }
             } else {
                 ObelisksMain.debugMsg(p, "Missing Block entity");
@@ -140,6 +127,22 @@ public class ObeliskBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    private static void joinMapSpecificObelisk(Player p, ObeliskBE obe) {
+        if (!obe.gaveMap) {
+            obe.setGaveMap();
+            var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
+            startNewMap(p, map, obe);
+        }
+        ObelisksMain.debugMsg(p, "Obelisk already initialized");
+
+        if (!obe.isActivated()) {
+            ObelisksMain.debugMsg(p, "Obelisk is not activated");
+            return;
+        }
+
+        joinCurrentMap(p, obe);
     }
 
 
