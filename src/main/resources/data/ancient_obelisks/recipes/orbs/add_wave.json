@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Y": {
+      "item": "ancient_obelisks:ancient_wrath"
+    }
+  },
+  "pattern": [
+    "YYY",
+    "YXY",
+    "YYY"
+  ],
+  "result": {
+    "count": 8,
+    "item": "ancient_obelisks:orbs/add_wave"
+  },
+  "show_notification": true
+}
