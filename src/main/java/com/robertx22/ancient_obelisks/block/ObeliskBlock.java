@@ -93,56 +93,54 @@ public class ObeliskBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level world, BlockPos pPos, Player p, InteractionHand pHand, BlockHitResult pHit) {
+        if (world.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        var be = world.getBlockEntity(pPos);
+        var obe = be instanceof ObeliskBE ? (ObeliskBE) be : null;
+        if (obe == null) {
+            ObelisksMain.debugMsg(p, "Missing Block entity");
+            return InteractionResult.SUCCESS;
+        }
 
-        if (!world.isClientSide) {
-            var be = world.getBlockEntity(pPos);
+        boolean isMapWorld = MapDimensions.isMap(world);
+        ItemStack stack = p.getMainHandItem();
+        if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
+            ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
 
-            if (be instanceof ObeliskBE obe) {
-                ItemStack stack = p.getMainHandItem();
-
-                if (MapDimensions.isMap(world)) {
-                    joinMapSpecificObelisk(p, obe);
-
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
-                    ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
-
-                    if (map.relic && !MapDimensions.isMap(world)) {
-                        p.sendSystemMessage(ObeliskWords.RELIC_MAPS_ONLY.get().withStyle(ChatFormatting.RED));
-                        return InteractionResult.SUCCESS;
-                    }
-
-                    ObelisksMain.debugMsg(p, "Trying to start new map");
-                    startNewMap(p, stack, obe);
-                    ObelisksMain.debugMsg(p, "Map started");
-                } else if (obe.isActivated()) {
-                    ObelisksMain.debugMsg(p, "Trying to join existing map");
-                    joinCurrentMap(p, obe);
-                }
-            } else {
-                ObelisksMain.debugMsg(p, "Missing Block entity");
+            if (!map.relic && isMapWorld) {
+                p.sendSystemMessage(ObeliskWords.RELIC_MAPS_ONLY.get().withStyle(ChatFormatting.RED));
+                return InteractionResult.SUCCESS;
             }
+
+            //ObelisksMain.debugMsg(p, "Trying to start new map");
+            startNewMap(p, stack, obe);
+            //ObelisksMain.debugMsg(p, "Map started");
+            return InteractionResult.SUCCESS;
+        }
+
+        if (obe.isActivated()) {
+            //ObelisksMain.debugMsg(p, "Trying to join existing map");
+            joinCurrentMap(p, obe);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (isMapWorld) {
+            initMapSpecificObelisk(p, obe);
+            return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.SUCCESS;
     }
 
-    private static void joinMapSpecificObelisk(Player p, ObeliskBE obe) {
-        if (!obe.gaveMap) {
-            obe.setGaveMap();
-            var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
-            startNewMap(p, map, obe);
-        }
-        ObelisksMain.debugMsg(p, "Obelisk already initialized");
-
-        if (!obe.isActivated()) {
-            ObelisksMain.debugMsg(p, "Obelisk is not activated");
+    private static void initMapSpecificObelisk(Player p, ObeliskBE obe) {
+        if (obe.gaveMap) {
             return;
         }
 
-        joinCurrentMap(p, obe);
+        obe.setGaveMap();
+        var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
+        startNewMap(p, map, obe);
     }
 
 
