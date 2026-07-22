@@ -45,7 +45,7 @@ public class ObeliskRelicStats extends ExileKeyHolder<RelicStat> {
     });
 
     public ExileKey<RelicStat, KeyInfo> TRIPLE_CHEST_REWARD_CHANCE = ExileKey.ofId(this, "triple_chest_chance", x -> {
-        var stat = new ManualRelicStat(x.GUID(), ObelisksMain.MODID, "%1$s Chance to Triple the Reward Chests at the end");
+        var stat = new ManualRelicStat(x.GUID(), ObelisksMain.MODID, "%1$s Chance to Triple the Reward Chests");
         return stat;
     });
 
