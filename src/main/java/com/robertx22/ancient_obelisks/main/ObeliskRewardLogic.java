@@ -1,5 +1,7 @@
 package com.robertx22.ancient_obelisks.main;
 
+import com.robertx22.ancient_obelisks.api.GetObeliskChestBonusEvent;
+import com.robertx22.ancient_obelisks.api.ObeliskExileEvents;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.database.holders.ObeliskRelicStats;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
@@ -50,7 +52,9 @@ public class ObeliskRewardLogic {
 
     public static void spawnChests(ObeliskMapData d, Level world, BlockPos pos) {
 
-        for (Player p : ObelisksMain.OBELISK_MAP_STRUCTURE.getAllPlayersInMap(world, pos)) {
+        List<Player> players = ObelisksMain.OBELISK_MAP_STRUCTURE.getAllPlayersInMap(world, pos);
+
+        for (Player p : players) {
             p.sendSystemMessage(ObeliskWords.OBELISK_END.get().withStyle(ChatFormatting.DARK_PURPLE));
         }
 
@@ -69,6 +73,11 @@ public class ObeliskRewardLogic {
                 chests *= 3;
             }
         }
+
+        // Atlas "Obelisk Extra Drops" - player-stat parallel to TRIPLE_CHEST_REWARD_CHANCE above
+        float playerBonus = ObeliskExileEvents.GET_CHEST_REWARD_BONUS.callEvents(
+                new GetObeliskChestBonusEvent(players)).bonusPercent;
+        chests = Math.round(chests * (1F + playerBonus / 100F));
 
         for (int i = 0; i < chests; i++) {
             var cpos = findNearbyFreeChestPos(world, pos);

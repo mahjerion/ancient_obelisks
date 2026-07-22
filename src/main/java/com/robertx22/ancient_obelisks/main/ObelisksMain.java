@@ -1,6 +1,7 @@
 package com.robertx22.ancient_obelisks.main;
 
 import com.google.common.collect.Lists;
+import com.robertx22.ancient_obelisks.api.ObeliskExileEvents;
 import com.robertx22.ancient_obelisks.capability.ObeliskEntityCapability;
 import com.robertx22.ancient_obelisks.configs.ObeliskConfig;
 import com.robertx22.ancient_obelisks.database.ObeliskDatabase;
@@ -205,6 +206,7 @@ public class ObelisksMain {
 
         ObeliskCommands.init();
         ObeliskRewardLogic.init();
+        ObeliskExileEvents.init();
 
         ExileEvents.ON_CHEST_LOOTED.register(new EventConsumer<ExileEvents.OnChestLooted>() {
             @Override
