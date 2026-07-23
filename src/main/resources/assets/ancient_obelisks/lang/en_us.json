@@ -36,7 +36,7 @@
 	"library_of_exile.relic_stat.mob_spawn_chance": "%1$s Mob Spawn Chance",
 	"library_of_exile.relic_stat.obelisk_content": "Your maps are %1$s more likely to contain Obelisk Content",
 	"library_of_exile.relic_stat.total_wave_mobs": "%1$s More Mobs per Wave",
-	"library_of_exile.relic_stat.triple_chest_chance": "%1$s Chance to Triple the Reward Chests at the end",
+	"library_of_exile.relic_stat.triple_chest_chance": "%1$s Chance to Triple the Reward Chests",
 	"library_of_exile.relic_stat.triple_obelisk_chance": "%1$s chance to contain 3x Obelisks",
 	"library_of_exile.relic_type.ancient_obelisks": "Obelisk Relic"
 
