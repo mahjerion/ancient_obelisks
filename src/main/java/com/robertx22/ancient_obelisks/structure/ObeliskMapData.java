@@ -8,6 +8,7 @@ import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.components.LibMapCap;
 import com.robertx22.library_of_exile.database.affix.base.ExileAffixData;
+import com.robertx22.library_of_exile.dimension.MapEntryGrace;
 import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -92,6 +93,20 @@ public class ObeliskMapData {
 
 
     public void waveLogicSecond(Level world, BlockPos pos) {
+        // the spawner block entity keeps ticking after the owner dies, logs out or ports home, and those
+        // mobs then get their level from whoever is nearest - which in a dimension where instances sit
+        // 160 blocks apart is a player in someone else's run. the harvest league already guards this.
+        var players = ObelisksMain.OBELISK_MAP_STRUCTURE.getAllPlayersInMap(world, pos);
+
+        if (players.isEmpty()) {
+            return;
+        }
+        // a fresh instance has currentWave -1 and waveCd 0, so wave 1 used to start the very tick the
+        // owner arrived - long before a slow client had drawn the arena
+        if (MapEntryGrace.anyInGrace(players, ObelisksMain.MAP.config)) {
+            return;
+        }
+
         if (currentWave >= (item.maxWaves - 1)) {
             if (endsIn-- < 1) {
                 canSpawnRewards = true;
