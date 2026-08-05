@@ -11,6 +11,7 @@
 	"ancient_obelisks.words.relic_map": "\u2605 Relic",
 	"ancient_obelisks.words.relic_maps_only": "This Obelisk only Accepts Relic Maps",
 	"ancient_obelisks.words.spawn_rate": "Mob Spawn Rate: %1$s%%",
+	"ancient_obelisks.words.starting_in": "Starting in %1$ss...",
 	"ancient_obelisks.words.wave_x_starting": "Wave %1$s Starting!",
 	"block.ancient_obelisks.obelisk": "Obelisk",
 	"block.ancient_obelisks.obelisk_reward": "Obelisk Reward Spawner",

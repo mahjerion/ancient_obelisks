@@ -103,6 +103,9 @@ public class ObeliskMapData {
         }
         // a fresh instance has currentWave -1 and waveCd 0, so wave 1 used to start the very tick the
         // owner arrived - long before a slow client had drawn the arena
+        // the countdown a player sees during this window is sent from the library's player tick
+        // (MapDimensionInfo.graceCountdownText) - this block entity is itself content, so on a fresh
+        // instance it doesn't exist yet and can't announce anything
         if (MapEntryGrace.anyInGrace(players, ObelisksMain.MAP.config)) {
             return;
         }

@@ -125,6 +125,10 @@ public class ObelisksMain {
         });
 
 
+        // the obelisk drops you into an arena that then does nothing until wave 1, which the spawn grace
+        // delays. yellow rather than the red the wave announcements use - nothing is happening yet
+        MAP.graceCountdownText = seconds -> ObeliskWords.STARTING_IN.get(seconds).withStyle(ChatFormatting.YELLOW);
+
         new MapRegisterBuilder(MAP)
                 .chunkGenerator(new EventConsumer<MapChunkGenEvent>() {
                     @Override

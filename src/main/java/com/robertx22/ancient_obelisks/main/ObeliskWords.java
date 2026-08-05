@@ -21,6 +21,7 @@ public enum ObeliskWords implements ITranslated {
     OBELISK_END("The magic of the Obelisk fades"),
     OBELISK_TIER_X("Obelisk Tier: %1$s"),
     WAVE_X_STARTING("Wave %1$s Starting!"),
+    STARTING_IN("Starting in %1$ss..."),
     RELIC_MAPS_ONLY("This Obelisk only Accepts Relic Maps"),
     LAST_WAVE("Last Wave INCOMING!");
     public String name;
