@@ -138,6 +138,9 @@ public class ObelisksMain {
                         }
                     }
                 }, id("obelisk_chunk_gen"))
+                // lets generation skip instances the counter has never handed out - see
+                // MapDimensionInfo.hasInstanceData
+                .instanceDataSource(level -> ObeliskMapCapability.get(level).data.data)
                 .build();
 
 
