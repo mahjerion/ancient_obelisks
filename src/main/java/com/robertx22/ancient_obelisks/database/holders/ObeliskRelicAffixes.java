@@ -19,6 +19,9 @@ public class ObeliskRelicAffixes extends ExileKeyHolder<MapDataBlock> {
 
     static String TYPE = ObelisksMain.MODID;
 
+    // empty relic_type means "any relic type can roll this" - see RelicGenerator
+    static String IMPLICIT_TYPE = "";
+
     public ExileKey<RelicAffix, KeyInfo> BONUS_OBELISK_CHANCE = ExileKey.ofId(this, "bonus_obelisk_chance", x -> {
         return new RelicAffix(x.GUID(), TYPE, new RelicMod(ObeliskRelicStats.INSTANCE.BONUS_OBELISK_CHANCE, 3, 25));
     });
@@ -37,6 +40,13 @@ public class ObeliskRelicAffixes extends ExileKeyHolder<MapDataBlock> {
 
     public ExileKey<RelicAffix, KeyInfo> OBELISK_CONTENT = ExileKey.ofId(this, "obelisk_content", x -> {
         return new RelicAffix(x.GUID(), TYPE, new RelicMod(ObeliskRelicStats.INSTANCE.OBELISK_CONTENT, 25, 100));
+    });
+
+    // Implicit, rolled into a relic's dedicated implicit slot. Empty relic_type on purpose: a league
+    // mechanic belongs to whichever mod registered it, not to a relic type, so any relic can roll it.
+    // Flat 100 so the guarantee doesn't depend on the affix roll.
+    public ExileKey<RelicAffix, KeyInfo> GUARANTEE_OBELISK_CONTENT = ExileKey.ofId(this, "guarantee_obelisk_content", x -> {
+        return new RelicAffix(x.GUID(), IMPLICIT_TYPE, new RelicMod(ObeliskRelicStats.INSTANCE.GUARANTEE_OBELISK_CONTENT, 100, 100)).setImplicit();
     });
 
     @Override
