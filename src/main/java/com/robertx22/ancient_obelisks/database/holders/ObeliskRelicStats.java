@@ -48,7 +48,7 @@ public class ObeliskRelicStats extends ExileKeyHolder<RelicStat> {
         return stat;
     });
     public ExileKey<RelicStat, KeyInfo> MOB_SPAWN_CHANCE = ExileKey.ofId(this, "mob_spawn_chance", x -> {
-        var stat = new ManualRelicStat(x.GUID(), ObelisksMain.MODID, "%1$s Mob Spawn Chance");
+        var stat = new ManualRelicStat(x.GUID(), ObelisksMain.MODID, "%1$s Increased Mob Spawn Chance");
         return stat;
     });
 
