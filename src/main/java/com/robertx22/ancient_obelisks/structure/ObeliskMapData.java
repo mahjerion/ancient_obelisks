@@ -8,6 +8,7 @@ import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.library_of_exile.components.LibMapCap;
 import com.robertx22.library_of_exile.database.affix.base.ExileAffixData;
+import com.robertx22.library_of_exile.database.relic.stat.RelicStatsContainer;
 import com.robertx22.library_of_exile.dimension.MapEntryGrace;
 import com.robertx22.library_of_exile.utils.RandomUtils;
 import net.minecraft.ChatFormatting;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,13 @@ public class ObeliskMapData {
 
     public boolean canSpawnRewards = false;
     public boolean spawnedRewards = false;
+
+    // relics slotted into the obelisk block that started this run. Not stored in LibMapCap (its key has
+    // no dimension component, an obelisk instance would clobber a dungeon's); ObelisksMain's
+    // GRAB_LIB_MAP_DATA listener serves these to LibMapCap.getData instead. Instances without their own
+    // relics fall through to the connected dungeon's relics.
+    public boolean hasRelics = false;
+    public RelicStatsContainer relicStats = new RelicStatsContainer(new HashMap<>());
 
 
     public float getTotalRewardChance() {

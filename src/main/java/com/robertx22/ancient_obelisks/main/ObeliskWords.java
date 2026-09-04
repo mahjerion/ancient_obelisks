@@ -10,7 +10,7 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.Locale;
 
 public enum ObeliskWords implements ITranslated {
-    MAP_ITEM_USE_INFO("Right Click the [Obelisk Block] with the map to start it."),
+    MAP_ITEM_USE_INFO("Right Click the [Obelisk Block] and place the map in its slot to start it."),
     CREATIVE_TAB("Ancient Obelisks"),
     NEW_MAP_GIVEN("The Obelisk gifts you with a Map. You can use this map to Activate the Obelisk."),
     NEW_WAVE_AFFIX("New Wave Affix: %1$s"),

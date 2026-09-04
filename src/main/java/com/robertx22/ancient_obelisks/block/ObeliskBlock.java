@@ -3,16 +3,13 @@ package com.robertx22.ancient_obelisks.block;
 import com.robertx22.ancient_obelisks.block_entity.ObeliskBE;
 import com.robertx22.ancient_obelisks.item.ObeliskItemMapData;
 import com.robertx22.ancient_obelisks.item.ObeliskItemNbt;
-import com.robertx22.ancient_obelisks.item.ObeliskMapItem;
-import com.robertx22.ancient_obelisks.main.ObeliskEntries;
-import com.robertx22.ancient_obelisks.main.ObeliskWords;
 import com.robertx22.ancient_obelisks.main.ObelisksMain;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.ancient_obelisks.structure.ObeliskMapData;
 import com.robertx22.library_of_exile.components.PlayerDataCapability;
-import com.robertx22.library_of_exile.dimension.MapDimensions;
+import com.robertx22.library_of_exile.database.relic.stat.RelicStatsContainer;
+import com.robertx22.library_of_exile.events.base.ExileEvents;
 import com.robertx22.library_of_exile.utils.TeleportUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,6 +29,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ObeliskBlock extends BaseEntityBlock {
     public ObeliskBlock() {
@@ -46,12 +44,23 @@ public class ObeliskBlock extends BaseEntityBlock {
 
         if (blockentity instanceof ObeliskBE be) {
             all.add(asItem().getDefaultInstance());
+
+            for (int i = 0; i < be.deviceInv.getContainerSize(); i++) {
+                var s = be.deviceInv.getItem(i);
+                if (!s.isEmpty()) {
+                    all.add(s.copy());
+                }
+            }
         }
 
         return all;
     }
 
-    public static void startNewMap(Player p, ItemStack stack, ObeliskBE be) {
+    /**
+     * @param relics resolved once, right before the instance data is written. The device GUI consumes relic
+     *               uses inside this supplier. May yield null when no relics are slotted.
+     */
+    public static void startNewMap(Player p, ItemStack stack, ObeliskBE be, Supplier<RelicStatsContainer> relics) {
 
         ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
 
@@ -66,15 +75,25 @@ public class ObeliskBlock extends BaseEntityBlock {
         data.x = start.x;
         data.z = start.z;
 
+        // kept on the obelisk's own data rather than in LibMapCap: that store is keyed by grid position
+        // with no dimension, so an obelisk instance would overwrite the dungeon instance on the same key.
+        // ObelisksMain's GRAB_LIB_MAP_DATA listener hands these back to LibMapCap.getData.
+        RelicStatsContainer relicStats = relics == null ? null : relics.get();
+        if (relicStats != null) {
+            data.relicStats = relicStats;
+            data.hasRelics = true;
+        }
+
         be.x = count.x;
         be.z = count.z;
 
         be.currentWorldUUID = ObeliskMapCapability.get(p.level()).data.data.uuid;
 
-
         be.setChanged();
 
+        // the stack is the one in the device's map slot (or the free in-map blank), so this empties the slot
         stack.shrink(1);
+        be.deviceInv.setChanged();
 
         ObeliskMapCapability.get(p.level()).data.data.setData(p, data, ObelisksMain.OBELISK_MAP_STRUCTURE, start.getMiddleBlockPosition(5));
 
@@ -101,50 +120,15 @@ public class ObeliskBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         var be = world.getBlockEntity(pPos);
-        var obe = be instanceof ObeliskBE ? (ObeliskBE) be : null;
-        if (obe == null) {
+        if (!(be instanceof ObeliskBE)) {
             ObelisksMain.debugMsg(p, "Missing Block entity");
             return InteractionResult.SUCCESS;
         }
 
-        boolean isMapWorld = MapDimensions.isMap(world);
-        ItemStack stack = p.getMainHandItem();
-        if (ObeliskItemNbt.OBELISK_MAP.has(stack)) {
-            ObeliskItemMapData map = ObeliskItemNbt.OBELISK_MAP.loadFrom(stack);
-
-            if (!map.relic && isMapWorld) {
-                p.sendSystemMessage(ObeliskWords.RELIC_MAPS_ONLY.get().withStyle(ChatFormatting.RED));
-                return InteractionResult.SUCCESS;
-            }
-
-            //ObelisksMain.debugMsg(p, "Trying to start new map");
-            startNewMap(p, stack, obe);
-            //ObelisksMain.debugMsg(p, "Map started");
-            return InteractionResult.SUCCESS;
-        }
-
-        if (obe.isActivated()) {
-            //ObelisksMain.debugMsg(p, "Trying to join existing map");
-            joinCurrentMap(p, obe);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (isMapWorld) {
-            initMapSpecificObelisk(p, obe);
-            return InteractionResult.SUCCESS;
-        }
-
+        // slotting the map and relics, starting and joining all go through the shared device GUI, which
+        // the main mod opens for this player
+        ExileEvents.OPEN_MAP_DEVICE.callEvents(new ExileEvents.OpenMapDeviceEvent(p, world, pPos));
         return InteractionResult.SUCCESS;
-    }
-
-    private static void initMapSpecificObelisk(Player p, ObeliskBE obe) {
-        if (obe.gaveMap) {
-            return;
-        }
-
-        obe.setGaveMap();
-        var map = ObeliskMapItem.blankMap(ObeliskEntries.OBELISK_MAP_ITEM.get().getDefaultInstance(), true);
-        startNewMap(p, map, obe);
     }
 
 
