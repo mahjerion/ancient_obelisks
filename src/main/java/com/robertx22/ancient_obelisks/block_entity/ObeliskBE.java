@@ -8,6 +8,7 @@ import com.robertx22.ancient_obelisks.structure.ObeliskMapCapability;
 import com.robertx22.library_of_exile.database.relic.stat.RelicStatsContainer;
 import com.robertx22.library_of_exile.dimension.MapDimensions;
 import com.robertx22.library_of_exile.dimension.device.IMapDeviceBlockEntity;
+import com.robertx22.library_of_exile.dimension.device.MapDeviceInvNbt;
 import com.robertx22.library_of_exile.dimension.device.MapDeviceKind;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -118,7 +119,7 @@ public class ObeliskBE extends BlockEntity implements ContainerListener, IMapDev
         nbt.putInt("xp", x);
         nbt.putInt("zp", z);
         nbt.putString("uid", currentWorldUUID);
-        nbt.put(INV_KEY, deviceInv.createTag());
+        nbt.put(INV_KEY, MapDeviceInvNbt.save(deviceInv));
     }
 
     @Override
@@ -129,7 +130,7 @@ public class ObeliskBE extends BlockEntity implements ContainerListener, IMapDev
         this.z = pTag.getInt("zp");
         this.currentWorldUUID = pTag.getString("uid");
         if (pTag.contains(INV_KEY)) {
-            deviceInv.fromTag(pTag.getList(INV_KEY, 10));
+            MapDeviceInvNbt.load(deviceInv, pTag.getList(INV_KEY, 10), this::acceptsMapItem);
         }
     }
 
