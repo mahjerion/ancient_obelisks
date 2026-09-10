@@ -1,2 +1,4 @@
-v.1.2.1
-- added dim wipe on boot
+v.1.2.8
+
+- fixed obelisk relic stats targeting a nonexistent map content
+- obelisk implicit now binds to dungeon relics
