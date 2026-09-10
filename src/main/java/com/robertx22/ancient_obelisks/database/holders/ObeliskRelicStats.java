@@ -15,30 +15,35 @@ public class ObeliskRelicStats extends ExileKeyHolder<RelicStat> {
 
     public static ObeliskRelicStats INSTANCE = new ObeliskRelicStats(ObelisksMain.REGISTER_INFO);
 
+    // the map content these stats act on. It is registered as "obelisk" (ObeliskMapContents.OBELISK),
+    // not under the modid - the modid was used here before, so none of these stats ever matched a
+    // content in MapBonusContentsData and all four were silently dead in maps.
+    private static final String CONTENT_ID = "obelisk";
+
     public ObeliskRelicStats(ModRequiredRegisterInfo modRegisterInfo) {
         super(modRegisterInfo);
     }
 
     public ExileKey<RelicStat, KeyInfo> OBELISK_CONTENT = ExileKey.ofId(this, "obelisk_content", x -> {
-        var stat = new ContentWeightRS(x.GUID(), ObelisksMain.MODID, ObelisksMain.MODID, "Obelisk");
+        var stat = new ContentWeightRS(x.GUID(), ObelisksMain.MODID, CONTENT_ID, "Obelisk");
         return stat;
     });
 
     // backs the implicit affix relics roll - claims one of a map's bonus content slots outright,
     // rather than only nudging the weighted pick the way OBELISK_CONTENT above does
     public ExileKey<RelicStat, KeyInfo> GUARANTEE_OBELISK_CONTENT = ExileKey.ofId(this, "guarantee_obelisk_content", x -> {
-        var stat = new GuaranteeContentRS(x.GUID(), ObelisksMain.MODID, ObelisksMain.MODID, "Obelisk");
+        var stat = new GuaranteeContentRS(x.GUID(), ObelisksMain.MODID, CONTENT_ID, "Obelisk");
         return stat;
     });
 
     public ExileKey<RelicStat, KeyInfo> BONUS_OBELISK_CHANCE = ExileKey.ofId(this, "bonus_obelisk_chance", x -> {
-        var data = new ExtraContentRS.Data(ExtraContentRS.Type.ADDITION, 1, ObelisksMain.MODID);
+        var data = new ExtraContentRS.Data(ExtraContentRS.Type.ADDITION, 1, CONTENT_ID);
         var stat = new ExtraContentRS(x.GUID(), ObelisksMain.MODID, "Obelisks", data);
         return stat;
     });
 
     public ExileKey<RelicStat, KeyInfo> TRIPLE_OBELISK_CHANCE = ExileKey.ofId(this, "triple_obelisk_chance", x -> {
-        var data = new ExtraContentRS.Data(ExtraContentRS.Type.MULTIPLY, 3, ObelisksMain.MODID);
+        var data = new ExtraContentRS.Data(ExtraContentRS.Type.MULTIPLY, 3, CONTENT_ID);
         var stat = new ExtraContentRS(x.GUID(), ObelisksMain.MODID, "Obelisks", data);
         return stat;
     });
